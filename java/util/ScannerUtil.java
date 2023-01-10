@@ -7,7 +7,7 @@ public class ScannerUtil {
     // 1. 입력시 사용자에게 보여줄 메시지 출력을 담당할 메소드
     public static void printMessage(String message) {
         System.out.println(message);
-        System.out.println("> ");
+        System.out.print("> ");
     }
 
     // 2. 스캐너 버그를 미리 방지하는 nextLine()
