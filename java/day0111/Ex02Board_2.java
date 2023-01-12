@@ -5,7 +5,9 @@ import util.ScannerUtil;
 
 import java.util.Scanner;
 
+
 public class Ex02Board_2 {
+    /*
     public static final Scanner SCANNER = new Scanner(System.in);
     public static Board[] boardArray = new Board[0];
     public static int nextId = 1;
@@ -130,4 +132,7 @@ public class Ex02Board_2 {
         return boardArray.length;
     }
      */
+
+
 }
+
