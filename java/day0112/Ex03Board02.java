@@ -1,7 +1,8 @@
 package day0112;
 
 import viewer.BoardViewer;
-import viewer.CommentView;
+import viewer.CommentViewer;
+import viewer.ReplyViewer;
 import viewer.UserViewer;
 
 import java.util.Scanner;
@@ -12,12 +13,43 @@ public class Ex03Board02 {
 
         UserViewer userViewer = new UserViewer(scanner);
         BoardViewer boardViewer = new BoardViewer(scanner);
-        CommentView commentView = new CommentView(scanner);
+        ReplyViewer replyViewer = new ReplyViewer(scanner);
 
         userViewer.setBoardViewer(boardViewer);
+        userViewer.setReplyViewer(replyViewer);
+
         boardViewer.setUserViewer(userViewer);
-        commentView.setBoardViewer(boardViewer);
+        boardViewer.setReplyViewer(replyViewer);
 
         userViewer.showIndex();
+
+
+
+
+
+
+
+
+
+
+
+
+        /*
+        Scanner scanner = new Scanner(System.in);
+
+        UserViewer userViewer = new UserViewer(scanner);
+        BoardViewer boardViewer = new BoardViewer(scanner);
+        CommentViewer commentViewer = new CommentViewer(scanner);
+
+        userViewer.setBoardViewer(boardViewer);
+        userViewer.setCommentViewer(commentViewer);
+        boardViewer.setUserViewer(userViewer);
+        boardViewer.setCommentView(commentViewer);
+        commentViewer.setBoardViewer(boardViewer);
+
+
+        userViewer.showIndex();
+
+         */
     }
 }

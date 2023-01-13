@@ -1,9 +1,9 @@
 package controller;
 
+import model.BoardDTO;
 import model.CommentDTO;
 
 import java.util.ArrayList;
-
 
 public class CommentController {
     private ArrayList<CommentDTO> list;
@@ -24,6 +24,15 @@ public class CommentController {
         }
         return null;
     }
+    public ArrayList<CommentDTO> selectAllBoardId(int BoardId){
+        ArrayList<CommentDTO> temp = new ArrayList<>();
+        for (CommentDTO c : list){
+            if(c.getBoardId() == BoardId){
+                temp.add(new CommentDTO(c));
+            }
+        }
+        return temp;
+    }
     public ArrayList<CommentDTO> selectAll(){
         ArrayList<CommentDTO> temp = new ArrayList<>();
         for (CommentDTO c : list){
@@ -37,6 +46,16 @@ public class CommentController {
     }
     public void delete(int id){
         list.remove(new CommentDTO(id));
+    }
+
+    public ArrayList<CommentDTO> selectAllWriteId(int id){    // 로그인 업데이트 변경
+        ArrayList<CommentDTO> temp = new ArrayList<>();
+        for (CommentDTO c : list){
+            if(c.getWriterId() == id){
+                temp.add(new CommentDTO(c));
+            }
+        }
+        return temp;
     }
 
 }

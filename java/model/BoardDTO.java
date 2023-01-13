@@ -1,11 +1,32 @@
 package model;
 
+import java.util.Date;
+
 public class BoardDTO {
     private int id;
     private String title;
     private int writerId;
     private String writerNickname;
     private String content;
+    private Date entryDate;
+    private Date modifyDate;
+
+
+    public Date getEntryDate() {
+        return entryDate;
+    }
+
+    public void setEntryDate(Date entryDate) {
+        this.entryDate = entryDate;
+    }
+
+    public Date getModifyDate() {
+        return modifyDate;
+    }
+
+    public void setModifyDate(Date modifyDate) {
+        this.modifyDate = modifyDate;
+    }
 
     public int getWriterId() {
         return writerId;
@@ -61,6 +82,8 @@ public class BoardDTO {
         writerId = origin.writerId;
         writerNickname = origin.writerNickname;
         content = origin.content;
+        entryDate = origin.entryDate;
+        modifyDate = origin.modifyDate;
     }
 
     public BoardDTO() {
@@ -70,6 +93,7 @@ public class BoardDTO {
     public BoardDTO(int id) {
         this.id = id;
     }
+
 
 
 

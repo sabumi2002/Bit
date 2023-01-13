@@ -23,8 +23,13 @@ public class ScannerUtil {
 
     // 3. 사용자로부터 정수 입력을 담당하는 nextInt()
     public static int nextInt(Scanner scanner, String message) {
-        printMessage(message);
-        int temp = scanner.nextInt();
+        String strTemp = nextLine(scanner, message);
+        while(!strTemp.matches("\\d+")){
+            System.out.println("잘못 입력하셨습니다.");
+            strTemp = nextLine(scanner, message);
+        }
+        int temp = Integer.parseInt(strTemp);
+
         return temp;
     }
 
