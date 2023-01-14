@@ -11,10 +11,22 @@ public class UserController {
     public UserController() {
         list = new ArrayList<>();
         nextId = 1;
+
+        for(int i =1; i< 4; i++){
+            UserDTO u = new UserDTO();
+            u.setId(nextId++);
+            u.setUsername(Integer.toString(i));
+            u.setPassword(Integer.toString(i));
+            u.setNickname(Integer.toString(i));
+            u.setRank(i);
+            list.add(u);
+        }
+
     }
 
     public void insert(UserDTO u) {
         u.setId(nextId++);
+        u.setRank(3);
         list.add(u);
     }
 
@@ -44,5 +56,13 @@ public class UserController {
             temp.add(new UserDTO(u));
         }
         return temp;
+    }
+    public UserDTO auth(String username, String password){
+        for (UserDTO u : list){
+            if (u.getUsername().equalsIgnoreCase(username) && u.getPassword().equals(password)){
+                return new UserDTO(u);
+            }
+        }
+        return null;
     }
 }

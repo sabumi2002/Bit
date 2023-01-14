@@ -26,4 +26,13 @@ public class ScannerUtill {
         }
         return Integer.parseInt(temp);
     }
+
+    public static int nextInt(Scanner scanner, String message, int MIN, int MAX) {
+        int temp = nextInt(scanner, message);
+        while (temp < MIN || temp > MAX) {
+            System.out.println("잘못 입력하셨습니다.");
+            temp = nextInt(scanner, message);
+        }
+        return temp;
+    }
 }
