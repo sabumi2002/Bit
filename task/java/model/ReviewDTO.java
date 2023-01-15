@@ -4,7 +4,7 @@ public class ReviewDTO {    // 평점 DTO
     private int id;
     private int userId;
     private int movieId;
-    private int grade;
+    private int grade;  // 별점 (0-5)
     private String review;
 
     public int getId() {
