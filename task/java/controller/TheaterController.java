@@ -14,25 +14,25 @@ public class TheaterController {
         list = new ArrayList<>();
         nextId = 1;
 
-        TheaterDTO m = new TheaterDTO();
-        m.setLocation("ㄱ구 ㄱ동 12-2번지");
-        m.setPhoneNumber("010-1234-1234");
-        m.setThaterName("ㄱ극장");
-        insert(m);
+        TheaterDTO t = new TheaterDTO();
+        t.setLocation("ㄱ구 ㄱ동 12-2번지");
+        t.setPhoneNumber("010-1234-1234");
+        t.setThaterName("ㄱ극장");
+        insert(t);
 
-        m.setLocation("ㄴ구 ㄴ동 1-3번지");
-        m.setPhoneNumber("010-0000-0001");
-        m.setThaterName("ㄴ극장");
-        insert(m);
+        t.setLocation("ㄴ구 ㄴ동 1-3번지");
+        t.setPhoneNumber("010-0000-0001");
+        t.setThaterName("ㄴ극장");
+        insert(t);
 
-        m.setLocation("ㄷ구 ㄷ동 33-2번지");
-        m.setPhoneNumber("010-5555-5432");
-        m.setThaterName("ㄷ극장");
-        insert(m);
+        t.setLocation("ㄷ구 ㄷ동 33-2번지");
+        t.setPhoneNumber("010-5555-5432");
+        t.setThaterName("ㄷ극장");
+        insert(t);
     }
     public void insert(TheaterDTO t) {
         t.setId(nextId++);
-        list.add(t);
+        list.add(new TheaterDTO(t));
     }
 
     public void update(TheaterDTO t) {

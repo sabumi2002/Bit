@@ -20,15 +20,16 @@ public class ScreenInfoController {
             insert(s);
         }
         ScreenInfoDTO s = new ScreenInfoDTO();
-        s.setMovieId(4);
+        s.setMovieId(1);
         s.setRunningTime("16:00 - 18:00");
-        s.setTheaterId(1);
-        insert(s);
+        s.setTheaterId(3);
+        insert(new ScreenInfoDTO(s));
 
-        s.setMovieId(3);
-        s.setRunningTime("16:00 - 18:00");
-        s.setTheaterId(2);
-        insert(s);
+        s.setMovieId(2);
+        s.setRunningTime("18:00 - 20:00");
+        s.setTheaterId(1);
+        insert(new ScreenInfoDTO(s));
+
 
     }
     public void insert(ScreenInfoDTO s) {

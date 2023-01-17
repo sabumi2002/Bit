@@ -7,9 +7,10 @@ import java.util.ArrayList;
 public class UserController {
     private ArrayList<UserDTO> list;
     private int nextId;
-
+    private ArrayList<UserDTO> rankUpList;
     public UserController() {
         list = new ArrayList<>();
+        rankUpList = new ArrayList<>();
         nextId = 1;
 
         for(int i =1; i< 4; i++){
@@ -64,5 +65,27 @@ public class UserController {
             }
         }
         return null;
+    }
+    public ArrayList<UserDTO> getRankUpList(){
+        ArrayList<UserDTO> temp = new ArrayList<>();
+        for (UserDTO u : rankUpList) {
+            temp.add(new UserDTO(u));
+        }
+        return temp;
+    }
+    public UserDTO getRankUpById(int id){
+        for(UserDTO u : rankUpList){
+            if(u.getId() == id){
+                return new UserDTO(u);
+            }
+        }
+        return null;
+    }
+    public void insertRankUp(UserDTO login){
+        rankUpList.add(new UserDTO(login));
+    }
+    public void deleteRankUp(int id){
+        UserDTO u = new UserDTO(id);
+        rankUpList.remove(u);
     }
 }
