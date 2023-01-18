@@ -1,8 +1,9 @@
 package model;
 
+import java.util.Comparator;
 import java.util.Date;
 
-public class BoardDTO {
+public class BoardDTO implements Comparable<BoardDTO> {
     private int id;
     private String title;
     private int writerId;
@@ -10,7 +11,6 @@ public class BoardDTO {
     private String content;
     private Date entryDate;
     private Date modifyDate;
-
 
     public Date getEntryDate() {
         return entryDate;
@@ -68,6 +68,12 @@ public class BoardDTO {
         this.content = content;
     }
 
+    @Override
+    public int compareTo(BoardDTO b) {
+
+        return this.id - b.id;
+    }
+
     public boolean equals(Object o) {
         if (o instanceof BoardDTO) {
             BoardDTO b = (BoardDTO) o;
@@ -93,75 +99,4 @@ public class BoardDTO {
     public BoardDTO(int id) {
         this.id = id;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /*
-    private int id;
-    private String title;
-    private String writer;
-    private String content;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getWriter() {
-        return writer;
-    }
-
-    public void setWriter(String writer) {
-        this.writer = writer;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public boolean equals(Object o){
-        if(o instanceof BoardDTO){
-            BoardDTO b = (BoardDTO) o;
-            return id == b.id;
-        }
-        return false;
-    }
-    public BoardDTO(BoardDTO origin){
-        id = origin.id;
-        title = origin.title;
-        writer = origin.writer;
-        content= origin.content;
-    }
-    public BoardDTO(){
-
-    }
-    */
 }
