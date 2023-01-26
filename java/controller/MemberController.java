@@ -91,4 +91,26 @@ public class MemberController {
         MemberDTO m = new MemberDTO(id);
         list.get(list.indexOf(m)).setLevel(level);
     }
+
+    public String selectNickname(int id) {
+        MemberDTO m = new MemberDTO(id);
+        int index = list.indexOf(m);
+        return list.get(index).getNickname();
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

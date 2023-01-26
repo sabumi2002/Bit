@@ -3,6 +3,7 @@ package day0118;
 import util.ScannerUtil;
 import viewer.FilmViewer;
 import viewer.MemberViewer;
+import viewer.ReviewViewer;
 
 import java.util.Scanner;
 
@@ -13,9 +14,14 @@ public class MovieProject {
         // 각 뷰어 초기화
         MemberViewer memberViewer = new MemberViewer(scanner);
         FilmViewer filmViewer = new FilmViewer(scanner);
+        ReviewViewer reviewViewer = new ReviewViewer(scanner);
 
         // 의존성 주입
         memberViewer.setFilmViewer(filmViewer);
+        memberViewer.setReviewViewer(reviewViewer);
+
+        filmViewer.setReviewViewer(reviewViewer);
+        reviewViewer.setMemberViewer(memberViewer);
 
         memberViewer.showIndex();
     }

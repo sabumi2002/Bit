@@ -17,6 +17,7 @@ public class MemberViewer {
     private final int LEVEL_CRITIC = 2;
     private final int LEVEL_ADMIN = 3;
     private FilmViewer filmViewer;
+    private ReviewViewer reviewViewer;
 
     public MemberViewer(Scanner scanner) {
         SCANNER = scanner;
@@ -29,6 +30,10 @@ public class MemberViewer {
         this.filmViewer = filmViewer;
     }
 
+    public void setReviewViewer(ReviewViewer reviewViewer) {
+        this.reviewViewer = reviewViewer;
+    }
+
     public void showIndex() {
         String message = "1. 로그인 2. 회원 가입 3. 종료";
         while (true) {
@@ -37,6 +42,7 @@ public class MemberViewer {
                 logIn();
                 if (logIn != null) {
                     filmViewer.setLogIn(logIn);
+                    reviewViewer.setLogIn(logIn);
                     showMenu();
                 }
             } else if (userChoice == 2) {
@@ -154,7 +160,7 @@ public class MemberViewer {
     private void printRequest(ArrayList<MemberDTO> list, String level) {
         System.out.println(level + "등급 신청 목록");
         for (MemberDTO m : list) {
-            System.out.printf("%d. %s", m.getId(), m.getUsername());
+            System.out.printf("%d. %s\n", m.getId(), m.getUsername());
         }
         String message = "등업을 승인할 회원의 번호나 뒤로 가실려면 0을 입력해주세요.";
         int userChoice = ScannerUtil.nextInt(SCANNER, message);
@@ -167,8 +173,10 @@ public class MemberViewer {
         if (userChoice != 0) {
             if (level.equalsIgnoreCase("평론가")) {
                 memberController.rankUp(userChoice, LEVEL_CRITIC);
+                criticList.remove(new MemberDTO(userChoice));
             } else {
                 memberController.rankUp(userChoice, LEVEL_ADMIN);
+                adminList.remove(new MemberDTO(userChoice));
             }
             printRequest(list, level);
         } else {
@@ -179,7 +187,7 @@ public class MemberViewer {
 
 
     private void promote() {
-        String message = "등업하실 등급을 입력해주세요. 1. 관리자 2. 평론가 0. 뒤로";
+        String message = "등업하실 등급을 입력해주세요. 2. 평론가 3. 관리자 0. 뒤로";
         int userChoice = ScannerUtil.nextInt(SCANNER, message);
         if (userChoice == logIn.getLevel()) {
             System.out.println("현재 등급으로는 변경하실 수 없습니다.");
@@ -225,27 +233,19 @@ public class MemberViewer {
                 criticList.remove(logIn);
                 adminList.remove(logIn);
 
+                // 리뷰 뷰어에서 해당 회원 번호를 작성자 번호로 가진
+                // reviewDTO등을 삭제하도록 지시
+                reviewViewer.deleteByWriterId(logIn.getId());
+
                 memberController.delete(logIn.getId());
 
                 logIn = null;
             }
         }
     }
+
+    public void printNickname(int id) {
+        System.out.print(memberController.selectNickname(id));
+    }
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
