@@ -1,0 +1,21 @@
+데이터베이스 이름: bitDB
+
+컬렉션 이름: healths
+
+인덱스 생성 명령어: 
+db.healths.createIndex({"가입자 일련번호":1})
+db.healths.createIndex({"신장(5Cm단위)" : "text"})
+
+find() before : 
+db.healths.find({"가입자 일련번호" : "12211"})
+db.healths.find({"신장(5Cm단위)" : {"$regex": "17.*"}})
+
+find() after :
+db.healths.find({"가입자 일련번호" : "12211"})
+db.healths.find({"$text": {"$search": "17.*"}})
+
+
+외부데이터의성격: json
+
+
+
