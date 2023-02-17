@@ -7,5 +7,7 @@ public class MovieDTO {
     int id;
     String title;
     String content;
-    int rank;
+    String rank;
+    String release;
+    String img;
 }

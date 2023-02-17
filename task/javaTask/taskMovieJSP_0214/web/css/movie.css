@@ -1,0 +1,595 @@
+
+#logo img {
+    margin-right: 5px;
+    width: 20px;
+    height: 20px;
+}
+
+#logo strong {
+    color: white;
+}
+
+header ul {
+    /*nav col-12 col-md-auto mb-2 justify-content-center mb-md-0"*/
+    display: flex;
+}
+
+header ul a {
+    color: white !important;
+}
+
+
+.movie-list {
+    letter-spacing: 0;
+
+}
+
+.movie-list p {
+    margin: 0;
+    padding: 0
+}
+
+.movie-list ol {
+    margin: 20px;
+}
+
+
+
+
+.movie-list ol li {
+    overflow: hidden;
+    position: relative;
+    float: left;
+    width: 230px;
+    height: 450px;
+    margin: 10px;
+    padding: 0;
+    background-color: #fff
+}
+
+.movie-list ol li:focus, .movie-list ol li:visited {
+    outline: 1px dotted #000
+}
+
+.movie-list ol li{
+    margin-top: 60px
+}
+
+.movie-list ol li.ad-event {
+    float: right
+}
+
+.movie-list ol li .movie-list-info {
+    overflow: hidden;
+    display: block;
+    position: relative;
+    height: 331px;
+    text-decoration: none;
+    background-color: #f5f5f5
+}
+
+.movie-list ol li .movie-list-info:focus, .movie-list ol li .movie-list-info:hover {
+    text-decoration: none
+}
+
+.movie-list ol li .movie-list-info .rank {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 230px;
+    height: 150px;
+    padding: 8px 0 0 10px;
+    line-height: 1.1;
+    font-size: 2em;
+    font-style: italic;
+    font-family: Roboto, Dotum, '돋움', sans-serif;
+    font-weight: 300;
+    color: #fff;
+    text-shadow: 2px 2px 2px rgba(0, 0, 0, .8);
+    background: url(https://img.megabox.co.kr/static/pc/images/movie/bg-movie-list-rank.png) no-repeat 0 0
+}
+
+.movie-list ol li.no-img .movie-list-info .rank {
+    background-image: none
+}
+
+.movie-list ol li .movie-list-info img.poster {
+    width: 230px;
+    height: 331px
+}
+
+.movie-list ol li .movie-list-info .curation {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    z-index: 2
+}
+
+.movie-list ol li .movie-list-info .curation p {
+    overflow: hidden;
+    width: 30px;
+    height: 29px;
+    text-indent: -9999px;
+    background-position: 0 0;
+    background-repeat: no-repeat
+}
+
+.movie-list ol li .movie-list-info .curation .film {
+    background-image: url(https://img.megabox.co.kr/static/pc/images/movie/bg-curation-film.png)
+}
+
+.movie-list ol li .movie-list-info .curation .classic {
+    background-image: url(https://img.megabox.co.kr/static/pc/images/movie/bg-curation-classic.png)
+}
+
+.movie-list ol li .movie-list-info .screen-type {
+    position: absolute;
+    right: 10px;
+    top: 10px
+}
+
+.movie-list ol li .movie-list-info .screen-type p {
+    width: 54px;
+    height: 20px;
+    font-size: .8em;
+    line-height: 19px;
+    text-align: center;
+    border-radius: 3px;
+    color: #fff;
+    background-color: rgba(0, 0, 0, .6)
+}
+
+.movie-list ol li .movie-list-info .screen-type p + p {
+    margin-top: 1px
+}
+
+.movie-list ol li .movie-list-info .screen-type2 {
+    position: absolute;
+    right: 10px;
+    top: 10px
+}
+
+.movie-list ol li .movie-list-info .screen-type2 p {
+    display: inline-block;
+    margin: 0 0 0 4px;
+    padding: 8px;
+    border-radius: 3px;
+    color: #fff;
+    background-color: rgba(0, 0, 0, .6)
+}
+
+.movie-list ol li .movie-list-info .screen-type2 img {
+    display: block
+}
+
+.movie-list ol li .btn-util .case.col-2 .button.img img {
+    display: inline-block;
+    padding-top: 7px
+}
+
+.movie-list ol li .tit-area {
+    position: relative;
+    width: 100%;
+    margin: 15px 0 0 0;
+    padding: 0 0 0 30px;
+    line-height: 25px
+}
+
+.movie-list ol li .tit-area .movie-grade {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    margin-top: -10px
+}
+
+.movie-list ol li .tit-area .tit {
+    overflow: hidden;
+    display: block;
+    width: 100%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    padding: 2px 0 0 1px;
+    font-size: 1.3333em;
+    font-weight: 400
+}
+
+.movie-list ol li .rate-date {
+    overflow: hidden;
+    padding: 10px 0 0 0
+}
+
+.movie-list ol li .rate-date span {
+    display: block;
+    position: relative;
+    float: left
+}
+
+.movie-list ol li .rate-date span.rate {
+    margin: 0 2px 0 0;
+    padding: 0 2px 0 0
+}
+
+.movie-list ol li .rate-date span.rate:after {
+    content: '';
+    display: block;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    width: 1px;
+    height: 12px;
+    margin: -6px 0 0 0;
+    background-color: #d8d9db
+}
+
+.movie-list ol li .btn-util {
+    overflow: hidden;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 36px
+}
+
+.movie-list ol li .btn-util .btn-like {
+    float: left;
+    width: 72px;
+    margin: 0;
+    padding: 0 5px;
+    font-size: .8667em;
+    border-color: #ebebeb
+}
+
+.movie-list ol li .btn-util .txt {
+    display: block;
+    float: left;
+    width: 153px;
+    height: 36px;
+    margin: 0 0 0 5px;
+    padding: 0;
+    text-align: center;
+    line-height: 36px;
+    color: #fff;
+    border-radius: 4px;
+    background-color: #666
+}
+
+.movie-list ol li .btn-util .case {
+    float: left;
+    width: 153px;
+    margin-left: 5px
+}
+
+.movie-list ol li .btn-util .case .button {
+    display: block;
+    float: left;
+    width: 100%;
+    margin: 0;
+    padding: 0
+}
+
+.movie-list ol li .btn-util .case.col-2 .button {
+    width: 74px;
+    margin-left: 5px
+}
+
+.movie-list ol li .btn-util .case.col-2 .button:first-child {
+    margin-left: 0
+}
+
+.movie-list ol li .movie-list-info .movie-score {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: -1;
+    width: 230px;
+    height: 331px;
+    color: #fff;
+    opacity: 0
+}
+
+.movie-list ol li .movie-list-info .movie-score.on {
+    top: 0;
+    z-index: 10
+}
+
+.movie-list ol li .movie-list-info .movie-score .wrap {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    color: #fff;
+    background-color: rgba(0, 0, 0, .8)
+}
+
+.movie-list ol li .movie-list-info .movie-score .wrap:focus, .movie-list ol li .movie-list-info .movie-score .wrap:hover {
+    color: #fff;
+    text-decoration: none;
+    outline: 1px dotted #000
+}
+
+.movie-list ol li .movie-list-info .movie-score .wrap .summary {
+    overflow: hidden;
+    height: 152px
+}
+
+.movie-list ol li .movie-list-info .movie-score .my-score {
+    overflow: hidden;
+    width: 100%;
+    margin-top: 110px;
+    padding: 5px 0 0 0;
+    border-top: 1px solid #3c3c3c;
+    text-align: center
+}
+
+.movie-list ol li .movie-list-info .movie-score .my-score .preview {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 36px
+}
+
+.movie-list ol li .movie-list-info .movie-score .my-score .preview .tit {
+    display: block;
+    float: left;
+    margin: 0 15px 0 0;
+    font-size: .8667em
+}
+
+.movie-list ol li .movie-list-info .movie-score .my-score .preview .number {
+    float: left;
+    font-size: 1.6em;
+    color: #59bec9
+}
+
+.movie-list ol li .movie-list-info .movie-score .my-score .review {
+    float: right;
+    vertical-align: middle;
+    line-height: 36px
+}
+
+.movie-list ol li .movie-list-info .movie-score .my-score .review .tit {
+    display: block;
+    float: right;
+    margin: 0 0 0 15px;
+    font-size: .8667em
+}
+
+.movie-list ol li .movie-list-info .movie-score .my-score .review .number {
+    float: left;
+    font-size: 1.6em;
+    color: #c698f4
+}
+
+.movie-list ol li .movie-list-info .movie-score .my-score .sign {
+    overflow: hidden;
+    display: inline-block;
+    width: 10px;
+    height: 16px;
+    margin: 10px 0 0 0;
+    vertical-align: middle;
+    text-indent: -999px;
+    background-position: center;
+    background-repeat: no-repeat
+}
+
+.movie-list ol li .movie-list-info .movie-score .my-score .sign.small {
+    background-image: url(https://img.megabox.co.kr/static/pc/images/common/bg/bg-arr-white-right.png)
+}
+
+.movie-list ol li .movie-list-info .movie-score .my-score .sign.big {
+    background-image: url(https://img.megabox.co.kr/static/pc/images/common/bg/bg-arr-white-left.png)
+}
+
+.movie-list ol li .movie-list-info .movie-score .my-score .sign.equal {
+    background-image: url(https://img.megabox.co.kr/static/pc/images/movie/bg-arr-score-equal.png)
+}
+
+.movie-list-no-result {
+    padding: 50px 0 0 0;
+    color: #222;
+    text-align: center;
+    font-size: 1.3333em
+}
+
+.movie-list-no-result p {
+    margin: 0;
+    padding: 50px 0;
+    border: 1px solid #f5f5f5;
+    border-width: 1px 0 1px 0
+}
+
+.movie-list-no-result p + p {
+    margin-top: 35px
+}
+
+.movie-list-no-result p strong {
+    display: block;
+    padding: 0 0 10px 0
+}
+
+.movie-list-no-result .ico-tip {
+    margin: -15px 0 0 0
+}
+
+.movie-list-no-result.classicContent {
+    padding-top: 0
+}
+
+.movie-list-no-favor {
+    padding: 50px 0 0 0;
+    color: #222;
+    text-align: center
+}
+
+.movie-list-no-favor p {
+    margin: 0;
+    padding: 0;
+    font-size: 1.3333em
+}
+
+.movie-grade {
+    overflow: hidden;
+    display: inline-block;
+    width: 23px;
+    height: 23px;
+    margin: 0;
+    padding: 0;
+    text-indent: -9999px;
+    background-position: center;
+    background-repeat: no-repeat
+}
+
+.movie-grade.age-all {
+    background-image: url(https://img.megabox.co.kr/static/pc/images/common/txt/ALL_46x46.png);
+    background-size: 23px 23px
+}
+
+.movie-grade.age-12 {
+    background-image: url(https://img.megabox.co.kr/static/pc/images/common/txt/12_46x46.png);
+    background-size: 23px 23px
+}
+
+.movie-grade.age-15 {
+    background-image: url(https://img.megabox.co.kr/static/pc/images/common/txt/15_46x46.png);
+    background-size: 23px 23px
+}
+
+.movie-grade.age-19 {
+    background-image: url(https://img.megabox.co.kr/static/pc/images/common/txt/18_46x46.png);
+    background-size: 23px 23px
+}
+
+.movie-grade.age-no {
+    background-image: url(https://img.megabox.co.kr/static/pc/images/common/txt/none_46x46.png);
+    background-size: 23px 23px
+}
+
+.movie-grade.small {
+    width: 20px;
+    height: 20px
+}
+
+.movie-grade.small.age-all {
+    background-image: url(https://img.megabox.co.kr/static/pc/images/common/txt/ALL_40x40.png);
+    background-size: 20px 20px
+}
+
+.movie-grade.small.age-12 {
+    background-image: url(https://img.megabox.co.kr/static/pc/images/common/txt/12_40x40.png);
+    background-size: 20px 20px
+}
+
+.movie-grade.small.age-15 {
+    background-image: url(https://img.megabox.co.kr/static/pc/images/common/txt/15_40x40.png);
+    background-size: 20px 20px
+}
+
+.movie-grade.small.age-19 {
+    background-image: url(https://img.megabox.co.kr/static/pc/images/common/txt/18_40x40.png);
+    background-size: 20px 20px
+}
+
+.movie-grade.small.age-no {
+    background-image: url(https://img.megabox.co.kr/static/pc/images/common/txt/none_40x40.png);
+    background-size: 20px 20px
+}
+
+
+.ico-heart-toggle-gray {
+    width: 17px;
+    height: 15px;
+    background-image: url(https://img.megabox.co.kr/static/pc/images/common/ico/ico-heart-toggle-gray.png);
+}
+
+.iconset {
+    overflow: hidden;
+    display: inline-block;
+    margin: -1px 0 0 0;
+    padding: 0;
+    font-size: 0;
+    line-height: 0;
+    vertical-align: middle;
+    background-position: 0 0;
+    background-repeat: no-repeat;
+}
+
+.button.purple {
+    color: #fff;
+    line-height: 36px;
+    border: 0;
+    background: #503396;
+}
+
+.button {
+    display: inline-block;
+    height: 36px;
+    margin: 0;
+    padding: 0 15px;
+    text-align: center;
+    line-height: 34px;
+    color: #503396;
+    font-weight: 400;
+    border-radius: 4px;
+    font-family: NanumBarunGothic, Dotum, '돋움', sans-serif;
+    text-decoration: none;
+    border: 1px solid #503396;
+    vertical-align: middle;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+body {
+    overflow: auto;
+    overflow-y: scroll;
+    letter-spacing: 0;
+    line-height: 1.5;
+    font-size: 15px;
+    color: #444;
+    font-weight: 400;
+    font-family: NanumBarunGothic, Dotum, '돋움', sans-serif;
+}
+
+div {
+    display: block;
+}
+
+#contents {
+    width: 100%;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.inner-wrap {
+    width: 1100px;
+    margin: 0 auto
+}
+
+.inner-wrap:after,.inner-wrap:before {
+    content: '';
+    display: table
+}
+
+.inner-wrap:after {
+    clear: both
+}
+#contents {
+    width: 100%;
+    margin: 0;
+    padding: 10px;
+}
+.paginationList {
+    margin: auto !important;
+}
+
+.pagination {
+    padding: 10px;
+}
+.pagination .page-item {
+}
+
+.movie-link {
+    color: black ;
+    text-decoration: none ;
+}

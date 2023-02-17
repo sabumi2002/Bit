@@ -11,20 +11,23 @@ import java.util.ArrayList;
 
 public class MovieController {
     private Connection connection;
+    private final int PAGE_SIZE = 8;
 
     public MovieController(ConnectionMaker connectionMaker) {
         this.connection = connectionMaker.makeConnection();
     }
 
     public void insert(MovieDTO movieDTO) {
-        String query = "INSERT INTO `board`(`title`, `content`, `rank`) " +
-                "VALUES(?, ?, ?)";
+        String query = "INSERT INTO `movie`(`title`, `content`, `rank`, `release`, `img`) " +
+                "VALUES(?, ?, ?, ?, ?)";
 
         try {
             PreparedStatement pstmt = connection.prepareStatement(query);
             pstmt.setString(1, movieDTO.getTitle());
             pstmt.setString(2, movieDTO.getContent());
-            pstmt.setInt(3, movieDTO.getRank());
+            pstmt.setString(3, movieDTO.getRank());
+            pstmt.setString(4, movieDTO.getRelease());
+            pstmt.setString(5, movieDTO.getImg());
 
             pstmt.executeUpdate();
 
@@ -34,13 +37,16 @@ public class MovieController {
         }
     }
 
-    public ArrayList<MovieDTO> selectAll() {
+    public ArrayList<MovieDTO> selectAll(int pageNo) {
         ArrayList<MovieDTO> list = new ArrayList<>();
 
-        String query = "SELECT * FROM `movie`.`movie` ORDER BY `id` DESC";
+        String query = "SELECT * FROM `movie`.`movie` ORDER BY `id` LIMIT ?, ?";
 
         try {
             PreparedStatement pstmt = connection.prepareStatement(query);
+            pstmt.setInt(1, (pageNo - 1) * PAGE_SIZE);
+            pstmt.setInt(2, PAGE_SIZE);
+
             ResultSet resultSet = pstmt.executeQuery();
 
             while (resultSet.next()) {
@@ -48,7 +54,9 @@ public class MovieController {
                 m.setId(resultSet.getInt("id"));
                 m.setTitle(resultSet.getString("title"));
                 m.setContent(resultSet.getString("content"));
-                m.setRank(resultSet.getInt("rank"));
+                m.setRank(resultSet.getString("rank"));
+                m.setRelease(resultSet.getString("release"));
+                m.setImg(resultSet.getString("img"));
 
                 list.add(m);
             }
@@ -76,7 +84,10 @@ public class MovieController {
                 m.setId(resultSet.getInt("id"));
                 m.setTitle(resultSet.getString("title"));
                 m.setContent(resultSet.getString("content"));
-                m.setRank(resultSet.getInt("rank"));
+                m.setRank(resultSet.getString("rank"));
+                m.setRelease(resultSet.getString("release"));
+                m.setImg(resultSet.getString("img"));
+
             }
 
             resultSet.close();
@@ -94,7 +105,7 @@ public class MovieController {
             PreparedStatement pstmt = connection.prepareStatement(query);
             pstmt.setString(1, m.getTitle());
             pstmt.setString(2, m.getContent());
-            pstmt.setInt(3, m.getRank());
+            pstmt.setString(3, m.getRank());
             pstmt.setInt(4, m.getId());
 
             pstmt.executeUpdate();
@@ -118,5 +129,30 @@ public class MovieController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public int countTotalPage() {
+        int totalPage = 0;
+        String query = "SELECT COUNT(*) FROM `movie`";
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(query);
+            ResultSet resultSet = pstmt.executeQuery();
+            int count = 0;
+            if (resultSet.next()) {
+                count = resultSet.getInt(1);
+            }
+
+            totalPage = count / PAGE_SIZE;
+            if (count % PAGE_SIZE != 0) {
+                totalPage++;
+            }
+
+            pstmt.close();
+            resultSet.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return totalPage;
     }
 }
