@@ -1,0 +1,124 @@
+header .tit {
+    background-color: #DBDFE5;
+    text-align: center;
+    font-family: SFPro,Arial,Noto Sans JP,AppleSDGothicNeo,sans-serif;
+    font-weight: 400;
+    font-size: 30px;
+}
+
+.update .inner {
+    border: 0;
+    text-align: center;
+    padding: 30px 28px;
+    font-size: 14px;
+    width: 400px;
+    margin: 0 auto;
+}
+
+.prof-info .tit {
+    text-align: left;
+    font-family: SFPro,Arial,Noto Sans JP,AppleSDGothicNeo,sans-serif;
+    font-weight: 700;
+    margin: 0;
+}
+.container {
+
+}
+
+#comment {
+    padding: 12px;
+    min-height: 84px;
+    border: 1px solid #DBDFE5;
+    width: 100%;
+    font-size: 14px;
+    font-family: '맑은 고딕','Malgun Gothic',sans-serif;
+    color: #9199A4;
+    background-color: #FFF;
+    resize: vertical;
+}
+
+
+.util {
+    float: right;
+}
+.cancel{
+    color: #000;
+    background-color: #FFF;
+}
+
+.check{
+    background-color: #BEC5D0;
+    color: #FFF;
+}
+
+
+button{
+    border: 1px solid #DBDFE5;
+    width: 70px;
+    height: 32px;
+    border-radius: 32px;
+    font-size: 14px;
+    line-height: 31px;
+    outline: none;
+    padding: 0;
+    margin: 0;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.star_rate .starR1 {
+    background: url("/images/star_half.png") no-repeat 0 0;
+    background-size: auto 100%;
+    width: 15px;
+    height: 30px;
+    float: left;
+    cursor: pointer;
+    border: none; margin: 0; padding: 0
+}
+
+.star_rate .starR2 {
+    background: url("/images/star_half.png") no-repeat 0 0;
+    background-size: auto 100%;
+    width: 15px;
+    height: 30px;
+    float: left;
+    cursor: pointer;
+    border: none; margin: 0; padding: 0;
+
+    transform: scaleX(-1);
+
+}
+
+.star_rate .starR1:hover ~button{
+    background: transparent;
+    background-size: auto 100%;
+    float: left;
+    width: 15px;
+    height: 30px;
+    border: none; margin: 0; padding: 0;
+
+}
+
+.star_rate .starR2:hover ~button {
+    background: transparent;
+    background-size: auto 100%;
+    float: left;
+    width: 15px;
+    height: 30px;
+    border: none; margin: 0; padding: 0;
+
+}
+
+.prof-info {
+    margin-left: 10px;
+}
+
+.star-info .score_info {
+    vertical-align: center;
+    margin-left: 10px;
+    float: left;
+    vertical-align: center;
+    font-size: 25px;
+    font-weight: 700;
+    font-family: '맑은 고딕','Malgun Gothic',sans-serif;
+}

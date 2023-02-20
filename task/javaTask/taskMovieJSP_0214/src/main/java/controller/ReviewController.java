@@ -3,6 +3,7 @@ package controller;
 import connector.ConnectionMaker;
 import model.ReviewDTO;
 
+import javax.crypto.spec.PSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -35,13 +36,14 @@ public class ReviewController {
         }
     }
 
-    public ArrayList<ReviewDTO> selectAll() {
+    public ArrayList<ReviewDTO> selectAll(int movieId) {
         ArrayList<ReviewDTO> list = new ArrayList<>();
 
-        String query = "SELECT * FROM `movie`.`review` ORDER BY `id` DESC";
+        String query = "SELECT * FROM `movie`.`review` WHERE `movie_id`=? ORDER BY `id` DESC";
 
         try {
             PreparedStatement pstmt = connection.prepareStatement(query);
+            pstmt.setInt(1, movieId);
             ResultSet resultSet = pstmt.executeQuery();
 
             while (resultSet.next()) {
@@ -111,7 +113,7 @@ public class ReviewController {
         }
     }
 
-    public void delete(int id){
+    public void delete(int id) {
         String query = "DELETE FROM `movie`.`review` WHERE `id` = ?";
 
         try {
@@ -124,5 +126,16 @@ public class ReviewController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public double movieAvg(int movieId) {
+        ArrayList<ReviewDTO> list = selectAll(movieId);
+        int sum = 0;
+        for (ReviewDTO r : list) {
+            sum += r.getRating();
+        }
+
+        double avg = (double) sum / list.size();
+        return Math.ceil(avg*100)/100.0;
     }
 }

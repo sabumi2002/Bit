@@ -2,10 +2,29 @@
 <%@ page import="connector.ConnectionMaker" %>
 <%@ page import="controller.UserController" %>
 <%@ page import="connector.MySqlConnectionMaker" %>
+<%@ page import="controller.MovieController" %>
+<%@ page import="model.MovieDTO" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
+    <%
+        UserDTO logIn = (UserDTO) session.getAttribute("logIn");
+
+
+        ConnectionMaker connectionMaker = new MySqlConnectionMaker();
+        UserController userController = new UserController(connectionMaker);
+        MovieController movieController = new MovieController(connectionMaker);
+
+        ArrayList<MovieDTO> movieList = movieController.selectAll(1);
+
+
+        pageContext.setAttribute("userController", userController);
+        pageContext.setAttribute("movieList", movieList);
+
+    %>
     <title>index</title>
     <!-- SWIPER -->
     <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
@@ -38,16 +57,7 @@
                 <img src="/images/main/git.jpg" alt="imageCinema"/>
                 <strong>BeomCinema</strong>
             </a>
-            <%
-                UserDTO logIn = (UserDTO) session.getAttribute("logIn");
-
-
-                ConnectionMaker connectionMaker = new MySqlConnectionMaker();
-                UserController userController = new UserController(connectionMaker);
-
-                pageContext.setAttribute("userController", userController);
-            %>
-            <div class="navbar-loginMenu" >
+            <div class="navbar-loginMenu">
                 <c:choose>
                     <c:when test="<%=logIn == null%>">
                         <button class="navbar-login" type="button" data-bs-toggle="collapse"
@@ -202,40 +212,38 @@
 
 
     <section class="notice">
-        <div class="promotion">
-            <div class="swiper-container">
-                <!-- swiper라이브러리를 사용할려면 필수적으로 swiper-wrapper 클래스를 생성해줘야함 -->
-                <div class="swiper-wrapper">
-                    <div class="swiper-slide">
-                        <img src="/images/main/titanic_poster.jpg" alt="무비시네마와 함께 즐겁고 활기차게 시작하세요!"/>
-                        <a href="javascript:void(0)" class="btn">자세히 보기</a>
+        <c:choose>
+            <c:when test="${empty movieList}">
+                <div>등록된 영화가 없습니다.</div>
+            </c:when>
+            <c:otherwise>
+
+                <div class="promotion">
+                    <div class="swiper-container">
+                        <!-- swiper라이브러리를 사용할려면 필수적으로 swiper-wrapper 클래스를 생성해줘야함 -->
+                        <div class="swiper-wrapper">
+                            <c:forEach items="${movieList}" var="movieDTO">
+                                <div class="swiper-slide">
+                                    <a href="/movie/movie-detail.jsp?id=${movieDTO.id}">
+                                        <img src="${movieDTO.img}" alt="무비시네마와 함께 즐겁고 활기차게 시작하세요!"/>
+                                    </a>
+                                </div>
+
+                            </c:forEach>
+                        </div>
                     </div>
-                    <div class="swiper-slide">
-                        <img src="/images/main/슬램덩크.jpg" alt="무비시네마와 함께 즐겁고 활기차게 시작하세요!"/>
-                        <a href="javascript:void(0)" class="btn">자세히 보기</a>
-                    </div>
-                    <div class="swiper-slide">
-                        <img src="/images/main/카운트_티저%20포스터.jpg" alt="무비시네마와 함께 즐겁고 활기차게 시작하세요!"/>
-                        <a href="javascript:void(0)" class="btn">자세히 보기</a>
-                    </div>
-                    <div class="swiper-slide">
-                        <img src="/images/main/패밀리포스터-2월15일%20NONIMAX.jpg" alt="무비시네마와 함께 즐겁고 활기차게 시작하세요!"/>
-                        <a href="javascript:void(0)" class="btn">자세히 보기</a>
-                    </div>
-                    <div class="swiper-slide">
-                        <img src="/images/main/m_poster.jpg" alt="무비시네마와 함께 즐겁고 활기차게 시작하세요!"/>
-                        <a href="javascript:void(0)" class="btn">자세히 보기</a>
-                    </div>
+<%--                    <div class="swiper-pagination"></div>--%>
+<%--                    <div class="swiper-prev">--%>
+<%--                        <div class="material-icons">arrow_back</div>--%>
+<%--                    </div>--%>
+<%--                    <div class="swiper-next">--%>
+<%--                        <div class="material-icons">arrow_forward</div>--%>
+<%--                    </div>--%>
                 </div>
-            </div>
-            <div class="swiper-pagination"></div>
-            <div class="swiper-prev">
-                <div class="material-icons">arrow_back</div>
-            </div>
-            <div class="swiper-next">
-                <div class="material-icons">arrow_forward</div>
-            </div>
-        </div>
+            </c:otherwise>
+        </c:choose>
+
+
     </section>
 
 

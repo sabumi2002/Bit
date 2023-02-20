@@ -164,10 +164,16 @@ body {
 
 
 
-
+.reply .tit {
+    color: black;
+    font-size: 30px;
+    text-align: center;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
 
 .star_rate .starR1 {
-    background: transparent;
+    background: url("/images/star_half.png") no-repeat 0 0;
     background-size: auto 100%;
     width: 25px;
     height: 50px;
@@ -177,7 +183,7 @@ body {
 }
 
 .star_rate .starR2 {
-    background: transparent;
+    background: url("/images/star_half.png") no-repeat 0 0;
     background-size: auto 100%;
     width: 25px;
     height: 50px;
@@ -185,26 +191,28 @@ body {
     cursor: pointer;
     border: none; margin: 0; padding: 0;
 
-    transform:rotate(90deg);
-    -moz-transform: scaleX(-1);
-    -o-transform: scaleX(-1);
-    -webkit-transform: scaleX(-1);
+    /*transform:rotate(90deg);*/
+    /*-moz-transform: scaleX(-1);*/
+    /*-o-transform: scaleX(-1);*/
+    /*-webkit-transform: scaleX(-1);*/
     transform: scaleX(-1);
 
 }
 
-.star_rate .starR1:hover ~ button{
-    background: url("/images/star_half.png") no-repeat 0 0;
+.star_rate .starR1:hover ~button{
+    background: transparent;
     background-size: auto 100%;
+    float: left;
     width: 25px;
     height: 50px;
     border: none; margin: 0; padding: 0;
 
 }
 
-.star_rate .starR2:hover ~ button {
-    background: url("/images/star_half.png") no-repeat 100% 0;
+.star_rate .starR2:hover ~button {
+    background: transparent;
     background-size: auto 100%;
+    float: left;
     width: 25px;
     height: 50px;
     border: none; margin: 0; padding: 0;
@@ -216,82 +224,193 @@ body {
     /*transform: scaleX(-1);*/
 }
 
-.star_rate .star {
-    margin-right: 0;
-}
-
-.star_rate .star.starR2 {
-    margin-right: 10px;
-}
-
-/* 관람평 별점 5개 : MY 영화관리 내가 본 영화, 관람평 작성 팝업 */
-.review_write .star_score_box {
-    padding: 10px 0 15px;
-    color: #000;
-    text-align: center;
-}
-
-.review_write .star_score_box .score_info em {
-    display: inline-block;
-    width: 50px;
+.star_rate .starR1:visited ~button{
+    background: transparent;
+    background-size: auto 100%;
+    float: left;
+    width: 25px;
     height: 50px;
-    padding-left: 5px;
-    font-family: "Roboto";
-    font-size: 46px;
+    border: none; margin: 0; padding: 0;
+
 }
 
-.review_write.new22 .star_score_box .star_info {
+.star_rate .starR2:visited ~button {
+    background: transparent;
+    background-size: auto 100%;
+    float: left;
+    width: 25px;
+    height: 50px;
+    border: none; margin: 0; padding: 0;
+
+    /*transform:rotate(90deg);*/
+    /*-moz-transform: scaleX(-1);*/
+    /*-o-transform: scaleX(-1);*/
+    /*-webkit-transform: scaleX(-1);*/
+    /*transform: scaleX(-1);*/
+}
+
+.reply {
+    /*height: 100%;*/
+    margin: 0 auto;
+    background-color: black;
+    z-index: -2;
+}
+.reply-bg {
+    z-index: -1;
+    margin: 0 auto;
+    padding: 0;
+    /* 배경이미지 반복여부 */
+    background-repeat: no-repeat;
+    /* 배경의 위치는 그 세션의 정가운데에 위치 */
+    background-position: center;
+    /* 더이상 요소가 스크롤될때 같이 스크롤되지않고 이미지가 뷰포트부분에 고정, 화면이 스크롤 되더라도 같이 움직이지않는구조로 만듬 */
+    background-attachment: fixed;
+    /* 배경의 이미지를 요소에 더 넓은 너비에 맞춰서 출력 */
+    background-size: contain;
+
+}
+
+.reply .cover {
+    z-index: 0;
+    /*background-color: rgba(18, 18, 18, 0.8);*/
+    background: #f8f8f8;
+
+}
+.reply .inner {
+    /*width: 1100px;*/
+    margin: 0 auto;
+    padding: 60px ;
+    background: #f8f8f8;
+    height: 300px;
+    display: block;
+}
+
+.review-score_box {
+    margin: 60px auto;
+
+
+}
+.star-info {
+
+    align-items: center;
+    text-align: center;
+    align-content: center;
+    align-self: center;
+
+    /*display: flex;*/
+}
+.star_rate {
+    display: inline-block;
+    margin: auto;
+}
+
+.star-info .score_info {
+    margin: 0 0 0 10px;
+    font-size: 2.5em;
+    font-weight: 700;
+}
+
+.review_box {
+    margin: 0 auto;
+    width: 800px;
+    vertical-align: center;
+    align-items: center;
+}
+#textComment {
+    width: 70%;
+    height: 50%;
+    vertical-align: center;
+    display: inline-block;
+}
+.review-button {
+    width: 120px;
+    height: 100px;
+    vertical-align: center;
+    display: inline-block;
+}
+
+.story-area .user-prof {
+    width: 80px;
+}
+
+.reply .review-print_box {
     display: flex;
     align-items: center;
-    justify-content: center;
+    vertical-align: middle;
+    margin-top: 20px;
+}
+.review-print_box .story-area {
+    vertical-align: middle;
+    align-items: center;
 }
 
-.review_write .star_rate.type6 {
-    display: inline-block;
-}
-
-.star_rate.type6 .starR1 {
-    background: url("../../Content/images/icon/ico_star50_off.png") no-repeat 0 0;
-    background-size: auto 100%;
-    width: 25px;
-    height: 50px;
-    float: left;
-    cursor: pointer;
+.reply .review-print_box .story-box {
+    display: table;
+    align-items: center;
+    vertical-align: middle;
+    position: relative;
+    width: calc(100% - 105px);
+    height: 84px;
     padding: 0;
-}
+    background-color: #f8f8fa;
+    border-radius: 0 0 0 10px;
 
-.star_rate.type6 .starR2 {
-    background: url("../../Content/images/icon/ico_star50_off.png") no-repeat 100% 0;
-    background-size: auto 100%;
-    width: 25px;
-    height: 50px;
-    float: left;
-    cursor: pointer;
+}
+.story-box .tit {
+    display: table-cell;
+    vertical-align: middle;
     padding: 0;
+    height: 84px;
+    width: 105px;
+    color: #0a53be;
+    font-size: 20px;
+    font-weight: 300;
 }
-
-.star_rate.type6 .starR1.on {
-    background: url("../../Content/images/icon/ico_star50_on.png") no-repeat 0 0;
-    background-size: auto 100%;
-    width: 25px;
+.story-box .story-point {
+    display: table-cell;
+    vertical-align: middle;
+    width: 60px;
     height: 50px;
+    /*text-align: center;*/
+    color: #0a53be;
+    font-size: 45px;
+    font-weight: 300;
 }
 
-.star_rate.type6 .starR2.on {
-    background: url("../../Content/images/icon/ico_star50_on.png") no-repeat 100% 0;
-    background-size: auto 100%;
-    width: 25px;
+
+.reply .review-print_box .story-box .story-txt {
+    display: table-cell;
+    position: relative;
+    padding: 0 20px 0 30px;
+    text-align: left;
+    width: 60%;
+    color: #666;
+    vertical-align: middle;
+    font-size: .9333em;
+    line-height: 1.4;
+    align-items: center;
+}
+.reply .review-print_box .story-box .story-txt:before {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 1px;
     height: 50px;
+    /*margin: auto;*/
+    margin-top: -25px;
+    background-color: rgba(0,0,0,.1);
 }
 
-.star_rate.type6 .star {
-    margin-right: 0;
+.story-box .story-utill {
+    display: table-cell;
+    vertical-align: middle;
 }
 
-.star_rate.type6 .star.starR2 {
-    margin-right: 10px;
+.reply .date {
+    text-align: right;
 }
-
 
 
 

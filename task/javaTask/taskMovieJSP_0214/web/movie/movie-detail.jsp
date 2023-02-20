@@ -3,7 +3,10 @@
 <%@ page import="controller.UserController" %>
 <%@ page import="connector.MySqlConnectionMaker" %>
 <%@ page import="controller.MovieController" %>
-<%@ page import="model.MovieDTO" %><%--
+<%@ page import="model.MovieDTO" %>
+<%@ page import="controller.ReviewController" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="model.ReviewDTO" %><%--
   Created by IntelliJ IDEA.
   User: Sabeom
   Date: 2023-02-17
@@ -12,6 +15,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
     <%
@@ -19,14 +23,21 @@
 
 
         int id = Integer.parseInt(request.getParameter("id"));
-
+//        session.setAttribute("movieId", id);
+//
+//        System.out.println(session.getAttribute("movieId"));
 
         ConnectionMaker connectionMaker = new MySqlConnectionMaker();
         MovieController movieController = new MovieController(connectionMaker);
         UserController userController = new UserController(connectionMaker);
+        ReviewController reviewController = new ReviewController(connectionMaker);
+
+        ArrayList<ReviewDTO> reviewList = reviewController.selectAll(id);
+
 
         MovieDTO m = movieController.selectOne(id);
 
+        pageContext.setAttribute("reviewList", reviewList);
         pageContext.setAttribute("userController", userController);
     %>
 
@@ -45,6 +56,7 @@
             integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
             crossorigin="anonymous"></script>
 
+    <script defer src="/js/movie-detail.js"></script>
 </head>
 
 <body>
@@ -116,7 +128,8 @@
                         <div class="score">
                             <p class="tit">실관람 평점</p>
                             <p class="cont">
-                                <em>9.7</em>
+                                <em><%=reviewController.movieAvg(m.getId())%>
+                                </em>
                             </p>
                         </div>
                         <div class="rate">
@@ -148,37 +161,94 @@
     </div>
 </section>
 <section class="reply">
-    <div class="reply-bg">
+    <div class="reply-bg" style="background-image: url('<%=m.getImg()%>');">
         <div class="cover">
             <div class="inner">
                 <div class="review-score_box">
-                    <p class="tit">평점 · 관람평 작성</p>
-                    <div class="star-info">
-                        <div class="star_rate type5">
+                    <form action="/reply/write_logic.jsp?movieId=<%=m.getId()%>" method="post">
+                        <p class="tit">평점 · 관람평 작성</p>
+                        <div class="star-info">
+                            <div class="star_rate">
 
-                            <button type="button" class="star starR1"></button>
-                            <button type="button" class="star starR2"></button>
-                            <button type="button" class="star starR1"></button>
-                            <button type="button" class="star starR2"></button>
-                            <button type="button" class="star starR1"></button>
-                            <button type="button" class="star starR2"></button>
-                            <button type="button" class="star starR1"></button>
-                            <button type="button" class="star starR2"></button>
-                            <button type="button" class="star starR1"></button>
-                            <button type="button" class="star starR2"></button>
+                                <button type="button" name="rating" value="1" class="star starR1"
+                                        onclick="rating_btn(value)"></button>
+                                <button type="button" name="rating" value="2" class="star starR2"
+                                        onclick="rating_btn(value)"></button>
+                                <button type="button" name="rating" value="3" class="star starR1"
+                                        onclick="rating_btn(value)"></button>
+                                <button type="button" name="rating" value="4" class="star starR2"
+                                        onclick="rating_btn(value)"></button>
+                                <button type="button" name="rating" value="5" class="star starR1"
+                                        onclick="rating_btn(value)"></button>
+                                <button type="button" name="rating" value="6" class="star starR2"
+                                        onclick="rating_btn(value)"></button>
+                                <button type="button" name="rating" value="7" class="star starR1"
+                                        onclick="rating_btn(value)"></button>
+                                <button type="button" name="rating" value="8" class="star starR2"
+                                        onclick="rating_btn(value)"></button>
+                                <button type="button" name="rating" value="9" class="star starR1"
+                                        onclick="rating_btn(value)"></button>
+                                <button type="button" name="rating" value="10" class="star starR2"
+                                        onclick="rating_btn(value)"></button>
+                            </div>
+                            <strong class="score_info">
+                                <em>10</em>
+                            </strong>
+                            <input type="hidden" class="hidden_score" name="score" value="10">
+
                         </div>
-                        <strong class="score_info">
-                            <em>10</em>
-                        </strong>
-                    </div>
+                        <div class="review_box">
+                            <textarea id="textComment" name="content" placeholder="평점 및 영화 관람평을 작성해주세요." title="관람평 작성">
+                            </textarea>
+                            <button class="review-button">관람평 작성</button>
+                        </div>
+                    </form>
                 </div>
-                <div class="review_box">
 
-                </div>
+                <c:choose>
+                    <c:when test="${empty reviewList}">
+                        <div>아직 등록된 댓글이 없습니다.</div>
+                    </c:when>
+                    <c:otherwise>
+                        <c:forEach items="${reviewList}" var="reviewDTO">
+                            <div class="review-print_box">
+                                <div class="story-area">
+                                    <div class="user-prof">
+                                        <div class="prof-img">
+                                            <img src="" alt="프로필 사진"
+                                                 title="프로필 사진">
+                                        </div>
+                                        <p class="user-id">${userController.selectOne(reviewDTO.writerId).nickname}</p>
+                                    </div>
+                                </div>
+                                <div class="story-box">
+                                    <div class="tit">관람평</div>
+                                    <div class="story-point">${reviewDTO.rating}</div>
+                                    <div class="story-txt">
+                                        <span>${reviewDTO.review}</span></div>
+                                    <div class="story-utill">
+                                        <form action="/reply/update.jsp?id=${reviewDTO.id}" method="post">
+                                        <button>수정</button>
+                                            <input type="hidden" name="movieId" value="<%=m.getId()%>">
+                                        </form>
+                                        <form action="/reply/delete.jsp?id=${reviewDTO.id}" method="post">
+                                            <button>삭제</button>
+                                            <input type="hidden" name="movieId" value="<%=m.getId()%>">
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="date">
+                                <span><fmt:formatDate value="${reviewDTO.entryDate}" pattern="yy/MM/dd"/></span>
+                            </div>
+                        </c:forEach>
+                    </c:otherwise>
+                </c:choose>
             </div>
         </div>
     </div>
 </section>
+
 
 </body>
 </html>
