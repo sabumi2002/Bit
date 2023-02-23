@@ -1,14 +1,8 @@
 <%@ page import="model.UserDTO" %>
 <%@ page import="model.BoardDTO" %>
 <%@ page import="controller.BoardController" %>
+<%@ page import="connector.MySqlConnectionMaker" %>
 <%@ page import="connector.ConnectionMaker" %>
-<%@ page import="connector.MySqlConnectionMaker" %><%--
-  Created by IntelliJ IDEA.
-  User: Sabeom
-  Date: 2023-02-10
-  Time: 오후 3:36
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -16,6 +10,7 @@
 </head>
 <body>
 <%
+    request.setCharacterEncoding("UTF-8");
     UserDTO logIn = (UserDTO) session.getAttribute("logIn");
     if (logIn == null) {
         response.sendRedirect("/index.jsp");

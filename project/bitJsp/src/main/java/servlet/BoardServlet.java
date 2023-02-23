@@ -17,7 +17,6 @@ public class BoardServlet extends HttpServlet {
         ConnectionMaker connectionMaker = new MySqlConnectionMaker();
         BoardController boardController = new BoardController(connectionMaker);
 
-
         response.setContentType("text/html; charset=UTF-8");
         PrintWriter writer = response.getWriter();
 

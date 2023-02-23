@@ -18,8 +18,8 @@
     ConnectionMaker connectionMaker = new MySqlConnectionMaker();
     UserController userController = new UserController(connectionMaker);
 
-    String username = request.getParameter("username");
-    String password = request.getParameter("password");
+    String username = request.getParameter("username"); // form 밑 input태그 name을 가져옴
+    String password = request.getParameter("password"); // form 안에 name 이 password인것을 가져옴
 
     UserDTO userDTO = userController.auth(username, password);
 
@@ -28,10 +28,10 @@
         address = "/index.jsp";
     }else{
         address = "/board/printList.jsp";
-        session.setAttribute("logIn", userDTO);
+        session.setAttribute("logIn", userDTO); // 세션에 로그인객체 저장
     }
 
-    response.sendRedirect(address);
+    response.sendRedirect(address); // 입력한 url로 이동.
 %>
 </body>
 </html>
