@@ -18,8 +18,8 @@ public class MovieController {
     }
 
     public void insert(MovieDTO movieDTO) {
-        String query = "INSERT INTO `movie`(`title`, `content`, `rank`, `release`, `img`) " +
-                "VALUES(?, ?, ?, ?, ?)";
+        String query = "INSERT INTO `movie`(`title`, `content`, `rank`, `release`, `img`, `length`) " +
+                "VALUES(?, ?, ?, ?, ?, ?)";
 
         try {
             PreparedStatement pstmt = connection.prepareStatement(query);
@@ -28,6 +28,7 @@ public class MovieController {
             pstmt.setString(3, movieDTO.getRank());
             pstmt.setString(4, movieDTO.getRelease());
             pstmt.setString(5, movieDTO.getImg());
+            pstmt.setString(6, movieDTO.getLength());
 
             pstmt.executeUpdate();
 
@@ -57,6 +58,40 @@ public class MovieController {
                 m.setRank(resultSet.getString("rank"));
                 m.setRelease(resultSet.getString("release"));
                 m.setImg(resultSet.getString("img"));
+                m.setLength(resultSet.getString("length"));
+
+                list.add(m);
+            }
+
+            resultSet.close();
+            pstmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+    public ArrayList<MovieDTO> selectAll(String rank) {
+        ArrayList<MovieDTO> list = new ArrayList<>();
+
+        String query = "SELECT * FROM `movie`.`movie` WHERE `rank` = ? ORDER BY `id` ";
+
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(query);
+            pstmt.setString(1, rank);
+
+
+            ResultSet resultSet = pstmt.executeQuery();
+
+            while (resultSet.next()) {
+                MovieDTO m = new MovieDTO();
+                m.setId(resultSet.getInt("id"));
+                m.setTitle(resultSet.getString("title"));
+                m.setContent(resultSet.getString("content"));
+                m.setRank(resultSet.getString("rank"));
+                m.setRelease(resultSet.getString("release"));
+                m.setImg(resultSet.getString("img"));
+                m.setLength(resultSet.getString("length"));
 
                 list.add(m);
             }
@@ -87,6 +122,7 @@ public class MovieController {
                 m.setRank(resultSet.getString("rank"));
                 m.setRelease(resultSet.getString("release"));
                 m.setImg(resultSet.getString("img"));
+                m.setLength(resultSet.getString("length"));
 
             }
 
@@ -100,13 +136,17 @@ public class MovieController {
     }
 
     public void update(MovieDTO m) {
-        String query = "UPDATE `board` SET `title` = ?, `content` = ?, `rank` = ? WHERE `id` = ?";
+        String query = "UPDATE `movie`.`movie` SET `title` = ?, `content` = ?, `rank` = ?, `release`=?, `img`=?, `length`=? WHERE `id` = ?";
         try {
             PreparedStatement pstmt = connection.prepareStatement(query);
             pstmt.setString(1, m.getTitle());
             pstmt.setString(2, m.getContent());
             pstmt.setString(3, m.getRank());
-            pstmt.setInt(4, m.getId());
+            pstmt.setString(4, m.getRelease());
+            pstmt.setString(5, m.getImg());
+            pstmt.setString(6, m.getLength());
+
+            pstmt.setInt(7, m.getId());
 
             pstmt.executeUpdate();
 
@@ -155,4 +195,7 @@ public class MovieController {
 
         return totalPage;
     }
+
+
+
 }

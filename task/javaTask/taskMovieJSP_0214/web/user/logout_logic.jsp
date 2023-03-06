@@ -12,8 +12,10 @@
 </head>
 <body>
 <%
+    String currentPage = (String) session.getAttribute("currentPage");
+
     session.removeAttribute("logIn");
-    response.sendRedirect("/index.jsp");
+    response.sendRedirect(currentPage);
 %>
 </body>
 </html>

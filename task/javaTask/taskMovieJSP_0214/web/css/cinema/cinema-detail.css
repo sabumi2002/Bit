@@ -1,0 +1,190 @@
+
+
+#hanzi {
+    z-index: -1;
+
+
+    background-image: url('/images/cinema/hanzi.png');
+
+
+    /* 배경이미지 반복여부 */
+    background-repeat: no-repeat;
+    /* 배경의 위치는 그 세션의 정가운데에 위치 */
+    background-position: center;
+    /* 더이상 요소가 스크롤될때 같이 스크롤되지않고 이미지가 뷰포트부분에 고정, 화면이 스크롤 되더라도 같이 움직이지않는구조로 만듬 */
+    background-attachment: fixed;
+    /* 배경의 이미지를 요소에 더 넓은 너비에 맞춰서 출력 */
+    background-size: cover;
+}
+
+.cinema-bg {
+    top: 0;
+    margin: 0 auto;
+    width: 70%;
+    height: 400px;
+    background-image: url("/images/cinema/cinema_bg.jpg");
+    z-index: -99999;
+    /*border-radius: 0 0 50px 50px;*/
+
+    /*filter: drop-shadow(0px 0px 50px rgba(0, 0, 0, 0.5))*/
+    /*drop-shadow(0 0px 100px rgba(0, 0, 0, 0.5))*/
+    /*drop-shadow(0 0px 200px rgba(0, 0, 0, 0.5));*/
+
+    /*box-shadow: -60px -50px 500px 2px #333333,*/
+    /*60px -50px 500px 2px #333333;*/
+}
+.cinemas .inner {
+    color: whitesmoke;
+}
+.cinemas .tit {
+    display: block;
+    height: 50px;
+    border-top: 2px solid #727171;
+    border-bottom: 2px solid #727171;
+}
+.cinemas .tit p{
+    font-size: 30px;
+    text-align: center;
+}
+.cinemas .inner .items{
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0px 50px 0px 50px;
+}
+.cinemas .inner .items li {
+    list-style: none;
+    margin-top: 15px;
+}
+
+.cinemas .inner .items li :after{
+    display: inline-block;
+    content: '';
+    width: 1px;
+    height: 12px;
+    background: #b9b9b9;
+    margin: 0 10px 0px 10px;
+    /*position: absolute;*/
+    /*right: 13px;*/
+    /*top: 50%;*/
+    /*margin-top: -6px;*/
+}
+.cinemas a{
+    color: #b9b9b9;
+    text-decoration: none;
+}
+.cinemas a:hover{
+    color: whitesmoke;
+    text-decoration: none;
+}
+.cinemas .cinema-admin {
+    display: inline-block;
+    width: 70%;
+    margin-left: 15%;
+    /*background-color: #1e2125;*/
+    border-radius: 0 0 10px 10px;
+}
+.cinemas .cinema-util {
+    width: 100%;
+    display: inline-block;
+    margin: 5px 0 5px 0;
+}
+
+.cinema .inner {
+    margin: 0 auto;
+    width: 80%;
+}
+
+.cinema .tit p{
+    margin-top: 20px;
+    font-size: 40px;
+    font-weight: 700 !important;
+    text-align: center;
+    font-family: NanumBarunGothic,Dotum,'돋움',sans-serif;
+}
+.cinema .img_box {
+    margin: 0 auto;
+    width: 80%;
+    border-radius: 10px 10px 10px 10px;
+    position: relative;
+
+}
+.img_box img{
+    width: 100%;
+    height: 50%;
+}
+.cinema .cinema-info-cover {
+    position: absolute;
+    width: 100%;
+    height: 35%;
+    z-index: 9;
+    background-color: rgba(18, 18, 18, 0.8);
+    bottom: 0;
+    display: block;
+}
+.cinema-info {
+    margin: 3% 3%;
+}
+.cinema-info span {
+    display: block;
+    color: whitesmoke;
+}
+.cinema .img_box img {
+    width: 100%;
+    border-radius: 10px 10px 10px 10px;
+}
+
+.movie_box .content {
+    display: flex;
+    flex-wrap: wrap;
+}
+.movie_box .items {
+    background-color: #c5d7f2;
+    border: 1px solid #DBDFE5;
+    width: 70px;
+    height: 32px;
+    border-radius: 32px;
+    font-size: 14px;
+    line-height: 31px;
+    outline: none;
+    padding: 0;
+    margin: 0 10px 0 0;
+    vertical-align: middle;
+    cursor: pointer;
+    text-align: center;
+}
+.movie_box .items:hover {
+    background-color: #1e2125;
+    color: white;
+}
+
+.movie_box .tit_box {
+    display: flex;
+    align-items: center;
+}
+.movie_box .tit_box .tit {
+    font-size: 30px;
+    font-weight: 100 !important;
+    /*text-align: center;*/
+    font-family: NanumBarunGothic,Dotum,'돋움',sans-serif;
+}
+.movie_box .tit_box p{
+    margin: 20px 0 0 0;
+    font-size: 20px;
+    font-weight: 10 !important;
+    /*text-align: center;*/
+    font-family: NanumBarunGothic,Dotum,'돋움',sans-serif;
+}
+.movie_box .movie_place {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 10 !important;
+    /*text-align: center;*/
+    font-family: NanumBarunGothic,Dotum,'돋움',sans-serif;
+}
+.movie_box .movie_place p {
+    margin: 0 0 0 10px;
+}
+.movie_box {
+    border-bottom: 2px solid #727171;
+    padding-bottom: 20px;
+}

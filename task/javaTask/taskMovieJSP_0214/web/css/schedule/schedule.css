@@ -1,0 +1,119 @@
+
+.movie-grade {
+    overflow: hidden;
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    margin: 0;
+    padding: 0;
+    text-indent: -9999px;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.movie-grade.age-all {
+    background-image: url(https://img.megabox.co.kr/static/pc/images/common/txt/ALL_46x46.png);
+    background-size: 40px 40px
+}
+
+.movie-grade.age-12 {
+    background-image: url(https://img.megabox.co.kr/static/pc/images/common/txt/12_46x46.png);
+    background-size: 40px 40px
+}
+
+.movie-grade.age-15 {
+    background-image: url(https://img.megabox.co.kr/static/pc/images/common/txt/15_46x46.png);
+    background-size: 40px 40px
+}
+
+.movie-grade.age-19 {
+    background-image: url(https://img.megabox.co.kr/static/pc/images/common/txt/18_46x46.png);
+    background-size: 40px 40px
+}
+
+.movie-grade.age-no {
+    background-image: url(https://img.megabox.co.kr/static/pc/images/common/txt/none_46x46.png);
+    background-size: 40px 40px
+}
+
+
+#hanzi {
+    z-index: -1;
+    height: 100%;
+
+
+    background-image: url('/images/cinema/hanzi.png');
+
+
+    /* 배경이미지 반복여부 */
+    background-repeat: no-repeat;
+    /* 배경의 위치는 그 세션의 정가운데에 위치 */
+    background-position: center;
+    /* 더이상 요소가 스크롤될때 같이 스크롤되지않고 이미지가 뷰포트부분에 고정, 화면이 스크롤 되더라도 같이 움직이지않는구조로 만듬 */
+    background-attachment: fixed;
+    /* 배경의 이미지를 요소에 더 넓은 너비에 맞춰서 출력 */
+    background-size: cover;
+}
+
+.inner {
+    margin: 0 auto;
+    padding-top: 5%;
+    width: 80%;
+    display: flex;
+}
+.tit p{
+    margin-top: 20px;
+    font-size: 40px;
+    font-weight: 700 !important;
+    text-align: center;
+    font-family: NanumBarunGothic,Dotum,'돋움',sans-serif;
+}
+
+.img_box{
+    width: 30%;
+    height: 40%;
+    margin-right: 30px;
+}
+.img_box img{
+    width: 100%;
+    height: 100%;
+    border-radius: 10px 10px 10px 10px;
+}
+.data_box{
+    width:100%;
+
+    padding: 15px;
+    border-radius: 10px 10px 10px 10px;
+    border: 1px solid #808080;
+    background-color: rgba(18, 18, 18, 0.8);
+
+    color: #c4c4c4;
+    text-align: center;
+
+}
+.movieBox {
+    border-bottom: 1px solid #808080;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    align-items: center;
+    display: flex;
+}
+.tit {
+    margin-left: 10px;
+    color: whitesmoke;
+    font-weight: 300;
+    font-size: 40px;
+}
+.p {
+    text-align: center;
+}
+.cinemaBox {
+    /*border-bottom: 1px solid #808080;*/
+    /*padding-bottom: 10px;*/
+    /*margin-bottom: 10px;*/
+
+}
+.scheduleBox {
+    /*font-size: 20px;*/
+}
+

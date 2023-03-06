@@ -21,9 +21,8 @@
     <%
         UserDTO logIn = (UserDTO) session.getAttribute("logIn");
 
-
         int id = Integer.parseInt(request.getParameter("id"));
-//        session.setAttribute("movieId", id);
+        session.setAttribute("currentPage", "/movie/movie-detail.jsp?id=" + id);
 //
 //        System.out.println(session.getAttribute("movieId"));
 
@@ -56,66 +55,16 @@
             integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
             crossorigin="anonymous"></script>
 
-    <script defer src="/js/movie-detail.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
+    <script src="/js/reply/replyUtil.js"></script>
+    <script defer src="/js/movie/movie-detail.js"></script>
 </head>
 
 <body>
-<header>
-    <div class="navbar navbar-dark bg-dark shadow-sm">
-        <div class="container">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader"
-                    aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <a href="/index.jsp" class="navbar-brand d-flex align-items-center">
-                <%--                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true" class="me-2" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>--%>
-                <img src="/images/main/git.jpg" alt="imageCinema"/>
-                <strong>BeomCinema</strong>
-            </a>
+<%--header_nav --%>
+<%@include file="/main/header_nav.jsp" %>
 
-            <div class="navbar-loginMenu">
-                <c:choose>
-                    <c:when test="<%=logIn == null%>">
-                        <button class="navbar-login" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#collapseExample"
-                                aria-expanded="false" aria-controls="collapseExample"
-                                onclick="location.href='/login.jsp'">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
-                                 class="bi bi-person-fill" viewBox="0 0 16 16">
-                                <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
-                            </svg>
-                        </button>
-                    </c:when>
-                    <c:otherwise>
-                        <ul class="navbar-logout" style="list-style: none; border: none; padding: 2px; margin: 0;">
-                            <li style="margin-right: 10px"><%=logIn.getNickname()%>님</li>
-                            <li>
-                                <a href="/user/logout_logic.jsp">로그아웃</a>
-                            </li>
-                        </ul>
-                    </c:otherwise>
-                </c:choose>
-            </div>
-        </div>
-    </div>
-    <div class="collapse bg-dark" id="navbarHeader">
-        <div class="container">
-            <div class="row">
-                <ul class="headerMenu">
-                    <li class="current">
-                        <a href="/movie/movie.jsp">영화 찾기</a>
-                    </li>
-                    <li class="current">
-                        <a href="">극장 찾기</a>
-                    </li>
-                    <li class="current">
-                        <a href="">상영 정보</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</header>
 <section class="movie-header">
     <div class="movie-header-bg" style="background-image: url('<%=m.getImg()%>');">
         <div class="cover">
@@ -140,6 +89,14 @@
                             </p>
                         </div>
                     </div>
+                    <c:if test="${logIn ne null and logIn.rank eq 1}">
+                        <div class="movie_util_box">
+                            <div class="movie_util">
+                                <button class="btn btn-outline-success" onclick="movieUpdate()">수정하기</button>
+                                <button class="btn btn-outline-danger" onclick="movieDelete()">삭제하기</button>
+                            </div>
+                        </div>
+                    </c:if>
                 </div>
                 <div>
                     <div class="poster">
@@ -165,44 +122,42 @@
         <div class="cover">
             <div class="inner">
                 <div class="review-score_box">
-                    <form action="/reply/write_logic.jsp?movieId=<%=m.getId()%>" method="post">
-                        <p class="tit">평점 · 관람평 작성</p>
-                        <div class="star-info">
-                            <div class="star_rate">
+                    <p class="tit">평점 · 관람평 작성</p>
+                    <div class="star-info">
+                        <div class="star_rate">
 
-                                <button type="button" name="rating" value="1" class="star starR1"
-                                        onclick="rating_btn(value)"></button>
-                                <button type="button" name="rating" value="2" class="star starR2"
-                                        onclick="rating_btn(value)"></button>
-                                <button type="button" name="rating" value="3" class="star starR1"
-                                        onclick="rating_btn(value)"></button>
-                                <button type="button" name="rating" value="4" class="star starR2"
-                                        onclick="rating_btn(value)"></button>
-                                <button type="button" name="rating" value="5" class="star starR1"
-                                        onclick="rating_btn(value)"></button>
-                                <button type="button" name="rating" value="6" class="star starR2"
-                                        onclick="rating_btn(value)"></button>
-                                <button type="button" name="rating" value="7" class="star starR1"
-                                        onclick="rating_btn(value)"></button>
-                                <button type="button" name="rating" value="8" class="star starR2"
-                                        onclick="rating_btn(value)"></button>
-                                <button type="button" name="rating" value="9" class="star starR1"
-                                        onclick="rating_btn(value)"></button>
-                                <button type="button" name="rating" value="10" class="star starR2"
-                                        onclick="rating_btn(value)"></button>
-                            </div>
-                            <strong class="score_info">
-                                <em>10</em>
-                            </strong>
-                            <input type="hidden" class="hidden_score" name="score" value="10">
+                            <button type="button" name="rating" value="1" class="star starR1"
+                                    onclick="rating_btn(value)"></button>
+                            <button type="button" name="rating" value="2" class="star starR2"
+                                    onclick="rating_btn(value)"></button>
+                            <button type="button" name="rating" value="3" class="star starR1"
+                                    onclick="rating_btn(value)"></button>
+                            <button type="button" name="rating" value="4" class="star starR2"
+                                    onclick="rating_btn(value)"></button>
+                            <button type="button" name="rating" value="5" class="star starR1"
+                                    onclick="rating_btn(value)"></button>
+                            <button type="button" name="rating" value="6" class="star starR2"
+                                    onclick="rating_btn(value)"></button>
+                            <button type="button" name="rating" value="7" class="star starR1"
+                                    onclick="rating_btn(value)"></button>
+                            <button type="button" name="rating" value="8" class="star starR2"
+                                    onclick="rating_btn(value)"></button>
+                            <button type="button" name="rating" value="9" class="star starR1"
+                                    onclick="rating_btn(value)"></button>
+                            <button type="button" name="rating" value="10" class="star starR2"
+                                    onclick="rating_btn(value)"></button>
+                        </div>
+                        <strong class="score_info">
+                            <em>10</em>
+                        </strong>
+                        <input type="hidden" id="reply-score" class="hidden_score" name="score" value="10">
 
-                        </div>
-                        <div class="review_box">
-                            <textarea id="textComment" name="content" placeholder="평점 및 영화 관람평을 작성해주세요." title="관람평 작성">
-                            </textarea>
-                            <button class="review-button">관람평 작성</button>
-                        </div>
-                    </form>
+                    </div>
+                    <div class="review_box">
+                        <textarea id="reply-content" name="content" placeholder="평점 및 영화 관람평을 작성해주세요."
+                                  title="관람평 작성"></textarea>
+                        <button class="review-button" onclick="writeReply()">관람평 작성</button>
+                    </div>
                 </div>
 
                 <c:choose>
@@ -226,16 +181,18 @@
                                     <div class="story-point">${reviewDTO.rating}</div>
                                     <div class="story-txt">
                                         <span>${reviewDTO.review}</span></div>
-                                    <div class="story-utill">
-                                        <form action="/reply/update.jsp?id=${reviewDTO.id}" method="post">
-                                        <button>수정</button>
-                                            <input type="hidden" name="movieId" value="<%=m.getId()%>">
-                                        </form>
-                                        <form action="/reply/delete.jsp?id=${reviewDTO.id}" method="post">
-                                            <button>삭제</button>
-                                            <input type="hidden" name="movieId" value="<%=m.getId()%>">
-                                        </form>
-                                    </div>
+                                    <c:if test="${reviewDTO.writerId == logIn.id}">
+                                        <div id="reply-util" class="story-utill">
+                                            <form action="/reply/update.jsp?id=${reviewDTO.id}" method="post">
+                                                <button>수정</button>
+                                                <input type="hidden" name="movieId" value="<%=m.getId()%>">
+                                            </form>
+                                            <form action="/reply/delete.jsp?id=${reviewDTO.id}" method="post">
+                                                <button>삭제</button>
+                                                <input type="hidden" name="movieId" value="<%=m.getId()%>">
+                                            </form>
+                                        </div>
+                                    </c:if>
                                 </div>
                             </div>
                             <div class="date">

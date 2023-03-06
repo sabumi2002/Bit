@@ -138,4 +138,28 @@ public class ReviewController {
         double avg = (double) sum / list.size();
         return Math.ceil(avg*100)/100.0;
     }
+
+    public boolean isWrite(int writerId) {
+        boolean isWrite = true;
+        String query = "SELECT * FROM `movie`.`review` WHERE `writer_id` = ?";
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(query);
+            pstmt.setInt(1, writerId);
+
+            ResultSet resultSet = pstmt.executeQuery();
+
+
+            if (resultSet.next()) {
+                isWrite = false;
+            }
+            System.out.println(resultSet.next());
+
+            resultSet.close();
+            pstmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return isWrite;
+    }
 }

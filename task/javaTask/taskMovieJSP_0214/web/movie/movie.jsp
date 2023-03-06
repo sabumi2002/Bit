@@ -11,10 +11,58 @@
   Time: 오전 10:37
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<% request.setCharacterEncoding("UTF-8");%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
+    <%
+        request.setCharacterEncoding("UTF-8");
+        UserDTO logIn = (UserDTO) session.getAttribute("logIn");
+        session.setAttribute("currentPage", "/movie/movie.jsp");
+
+        int pageNo;
+        try {
+            String pageStr = request.getParameter("pageNo");
+            pageNo = Integer.parseInt(pageStr);
+        } catch (Exception e) {
+            pageNo = 1;
+        }
+
+
+        ConnectionMaker connectionMaker = new MySqlConnectionMaker();
+        MovieController movieController = new MovieController(connectionMaker);
+        UserController userController = new UserController(connectionMaker);
+
+        ArrayList<MovieDTO> list = movieController.selectAll(pageNo);
+
+        int totalPage = movieController.countTotalPage();
+
+        int startNum;
+        int endNum;
+
+        if (pageNo < 3) {
+            startNum = 1;
+            endNum = 5;
+        } else if (pageNo > totalPage - 3) {
+            startNum = totalPage - 4;
+            endNum = totalPage;
+        } else if (totalPage <= 5) {
+            startNum = 1;
+            endNum = totalPage;
+        } else {
+            startNum = pageNo - 2;
+            endNum = pageNo + 2;
+        }
+
+        pageContext.setAttribute("list", list);
+        pageContext.setAttribute("userController", userController);
+        pageContext.setAttribute("currentPage", pageNo);
+        pageContext.setAttribute("startPage", startNum);
+        pageContext.setAttribute("endPage", endNum);
+        pageContext.setAttribute("totalPage", totalPage);
+
+    %>
     <!-- CSS only -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
@@ -31,76 +79,36 @@
 </head>
 
 <body>
-<header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom navbar-dark bg-dark shadow-sm">
-    <a href="/" id="logo" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-decoration-none">
-        <img src="/images/main/git.jpg" alt="imageCinema"/>
-        <strong>BeomCinema</strong>
-    </a>
+<%@include file="/main/header_nav.jsp" %>
+<%--<header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom navbar-dark bg-dark shadow-sm">--%>
+<%--    <a href="/" id="logo" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-decoration-none">--%>
+<%--        <img src="/images/main/git.jpg" alt="imageCinema"/>--%>
+<%--        <strong>BeomCinema</strong>--%>
+<%--    </a>--%>
 
-    <ul id="nav-menu" class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-        <li><a href="#" class="nav-link px-2">Home</a></li>
-        <li><a href="#" class="nav-link px-2">Features</a></li>
-        <li><a href="#" class="nav-link px-2">Pricing</a></li>
-        <li><a href="#" class="nav-link px-2">FAQs</a></li>
-        <li><a href="#" class="nav-link px-2">About</a></li>
-    </ul>
+<%--    <ul id="nav-menu" class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">--%>
+<%--        <li><a href="#" class="nav-link px-2">Home</a></li>--%>
+<%--        <li><a href="#" class="nav-link px-2">Features</a></li>--%>
+<%--        <li><a href="#" class="nav-link px-2">Pricing</a></li>--%>
+<%--        <li><a href="#" class="nav-link px-2">FAQs</a></li>--%>
+<%--        <li><a href="#" class="nav-link px-2">About</a></li>--%>
+<%--    </ul>--%>
 
-    <div class="col-md-3 text-end">
-        <button type="button" class="btn btn-outline-primary me-2">Login</button>
-        <button type="button" class="btn btn-primary">Sign-up</button>
-    </div>
-</header>
+<%--    <div class="col-md-3 text-end">--%>
+<%--        <button type="button" class="btn btn-outline-primary me-2">Login</button>--%>
+<%--        <button type="button" class="btn btn-primary">Sign-up</button>--%>
+<%--    </div>--%>
+<%--</header>--%>
+<div class="movie_util_box text-center">
+    <c:if test="${logIn ne null and logIn.rank eq 1}">
+        <div class="movie_util">
+            <button class="btn btn-outline-info" onclick="location.href='/movie/write.jsp'">영화 추가하기</button>
+        </div>
+    </c:if>
+</div>
 
 <div id="contents">
     <div class="inner-wrap">
-        <%
-            //            UserDTO logIn = (UserDTO) session.getAttribute("logIn");
-
-
-            int pageNo;
-            try {
-                String pageStr = request.getParameter("pageNo");
-                pageNo = Integer.parseInt(pageStr);
-            } catch (Exception e) {
-                pageNo = 1;
-            }
-
-
-            ConnectionMaker connectionMaker = new MySqlConnectionMaker();
-            MovieController movieController = new MovieController(connectionMaker);
-            UserController userController = new UserController(connectionMaker);
-
-            ArrayList<MovieDTO> list = movieController.selectAll(pageNo);
-
-            int totalPage = movieController.countTotalPage();
-
-            int startNum;
-            int endNum;
-
-            if (pageNo < 3) {
-                startNum = 1;
-                endNum = 5;
-            } else if (pageNo > totalPage - 3) {
-                startNum = totalPage - 4;
-                endNum = totalPage;
-            } else if (totalPage <= 5) {
-                startNum = 1;
-                endNum = totalPage;
-            } else {
-                startNum = pageNo - 2;
-                endNum = pageNo + 2;
-            }
-
-            pageContext.setAttribute("list", list);
-            pageContext.setAttribute("userController", userController);
-            pageContext.setAttribute("currentPage", pageNo);
-            pageContext.setAttribute("startPage", startNum);
-            pageContext.setAttribute("endPage", endNum);
-            pageContext.setAttribute("totalPage", totalPage);
-
-        %>
-
-
         <div class="movie-list">
             <c:choose>
             <c:when test="${list.isEmpty()}">

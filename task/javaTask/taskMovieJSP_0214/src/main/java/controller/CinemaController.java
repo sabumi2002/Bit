@@ -17,14 +17,21 @@ public class CinemaController {
     }
 
     public void insert(CinemaDTO cinemaDTO) {
-        String query = "INSERT INTO `movie`.`cinema`(`name`, `location`, `phone_number`) " +
-                "VALUES(?, ?, ?)";
+
+        String query = "INSERT INTO `movie`.`cinema`(`name`, `location`, `phone_number`, `img`, `room`) " +
+                "VALUES(?, ?, ?, ?, ?)";
+        if (cinemaDTO.getImg() == null) {
+            query = "INSERT INTO `movie`.`cinema`(`name`, `location`, `phone_number`) VALUES(?, ?, ?)";
+        }
 
         try {
             PreparedStatement pstmt = connection.prepareStatement(query);
             pstmt.setString(1, cinemaDTO.getName());
             pstmt.setString(2, cinemaDTO.getLocation());
             pstmt.setString(3, cinemaDTO.getPhoneNumber());
+            if (cinemaDTO.getImg() != null) {
+                pstmt.setString(4, cinemaDTO.getImg());
+            }
 
             pstmt.executeUpdate();
 
@@ -37,7 +44,7 @@ public class CinemaController {
     public ArrayList<CinemaDTO> selectAll() {
         ArrayList<CinemaDTO> list = new ArrayList<>();
 
-        String query = "SELECT * FROM `movie`.`cinema` ORDER BY `id` DESC";
+        String query = "SELECT * FROM `movie`.`cinema` ORDER BY `name`";
 
         try {
             PreparedStatement pstmt = connection.prepareStatement(query);
@@ -49,6 +56,8 @@ public class CinemaController {
                 c.setName(resultSet.getString("name"));
                 c.setLocation(resultSet.getString("location"));
                 c.setPhoneNumber(resultSet.getString("phone_number"));
+                c.setImg(resultSet.getString("img"));
+                c.setRoom(resultSet.getInt("room"));
 
                 list.add(c);
             }
@@ -77,6 +86,8 @@ public class CinemaController {
                 c.setName(resultSet.getString("name"));
                 c.setLocation(resultSet.getString("location"));
                 c.setPhoneNumber(resultSet.getString("phone_number"));
+                c.setImg(resultSet.getString("img"));
+                c.setRoom(resultSet.getInt("room"));
             }
 
             resultSet.close();
@@ -89,13 +100,16 @@ public class CinemaController {
     }
 
     public void update(CinemaDTO c) {
-        String query = "UPDATE `movie`.`cinema` SET `name` = ?, `location` = ?, `phone_number` =? WHERE `id` = ?";
+        String query = "UPDATE `movie`.`cinema` SET `name` = ?, `location` = ?, `phone_number` =?, `img` = ?, `room`=? WHERE `id` = ?";
         try {
             PreparedStatement pstmt = connection.prepareStatement(query);
             pstmt.setString(1, c.getName());
             pstmt.setString(2, c.getLocation());
             pstmt.setString(3, c.getPhoneNumber());
-            pstmt.setInt(4, c.getId());
+            pstmt.setString(4, c.getImg());
+            pstmt.setInt(5, c.getRoom());
+
+            pstmt.setInt(6, c.getId());
 
             pstmt.executeUpdate();
 
@@ -105,7 +119,7 @@ public class CinemaController {
         }
     }
 
-    public void delete(int id){
+    public void delete(int id) {
         String query = "DELETE FROM `movie`.`cinema` WHERE `id` = ?";
 
         try {

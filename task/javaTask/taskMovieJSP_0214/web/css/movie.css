@@ -1,23 +1,77 @@
+.movie_util_box {
+    padding-top: 55px;
+}
 
-#logo img {
+.movie_util .btn{
+    width: 65%;
+}
+
+
+.navbar a{
+    float: inherit;
+}
+.navbar a img{
     margin-right: 5px;
-    width: 20px;
-    height: 20px;
+    width:20px;
+    height:20px;
 }
 
-#logo strong {
-    color: white;
+
+
+.navbar-login {
+    background-color: rgba(0, 0, 0, 0);
+    color: whitesmoke;
+    border: none;
 }
 
-header ul {
-    /*nav col-12 col-md-auto mb-2 justify-content-center mb-md-0"*/
+.navbar-logout {
+    background-color: rgba(0, 0, 0, 0);
+    color: whitesmoke;
+    border: none;
     display: flex;
+    list-style: none;
+}
+.navbar-logout li {
+    list-style: none;
 }
 
-header ul a {
-    color: white !important;
+header .headerMenu {
+    position: relative;
+    text-align: center;
+    line-height: 3.5;
+    width: 520px;
+    height: 100%;
+    margin: 0 auto;
+    white-space: nowrap;
+    font-family: SFPro,Arial,Noto Sans JP,AppleSDGothicNeo,sans-serif;
+    font-weight: 700;
+
 }
 
+header .headerMenu li {
+    display: inline-block;
+    margin-right: 80px;
+    line-height: 1.23;
+    padding-bottom: 4px;
+
+}
+header .headerMenu li a {
+    font-size: 20px;
+    font-weight: 700;
+    color: white;
+    text-decoration: none;
+}
+
+#contents {
+    overflow: auto;
+    overflow-y: scroll;
+    letter-spacing: 0;
+    line-height: 1.5;
+    font-size: 15px;
+    color: #444;
+    font-weight: 400;
+    font-family: NanumBarunGothic,Dotum,'돋움',sans-serif;
+}
 
 .movie-list {
     letter-spacing: 0;
@@ -52,7 +106,8 @@ header ul a {
 }
 
 .movie-list ol li{
-    margin-top: 60px
+    margin-top: 0px;
+    margin-bottom: 60px;
 }
 
 .movie-list ol li.ad-event {
@@ -541,16 +596,16 @@ header ul a {
     cursor: pointer;
 }
 
-body {
-    overflow: auto;
-    overflow-y: scroll;
-    letter-spacing: 0;
-    line-height: 1.5;
-    font-size: 15px;
-    color: #444;
-    font-weight: 400;
-    font-family: NanumBarunGothic, Dotum, '돋움', sans-serif;
-}
+/*body {*/
+/*    overflow: auto;*/
+/*    overflow-y: scroll;*/
+/*    letter-spacing: 0;*/
+/*    line-height: 1.5;*/
+/*    font-size: 15px;*/
+/*    color: #444;*/
+/*    font-weight: 400;*/
+/*    font-family: NanumBarunGothic, Dotum, '돋움', sans-serif;*/
+/*}*/
 
 div {
     display: block;
@@ -566,7 +621,7 @@ div {
 
 .inner-wrap {
     width: 1100px;
-    margin: 0 auto
+    margin: 0 auto;
 }
 
 .inner-wrap:after,.inner-wrap:before {

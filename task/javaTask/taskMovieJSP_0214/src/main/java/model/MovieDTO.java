@@ -9,5 +9,6 @@ public class MovieDTO {
     String content;
     String rank;
     String release;
+    String length;
     String img;
 }

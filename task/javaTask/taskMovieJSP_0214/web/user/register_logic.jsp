@@ -27,7 +27,7 @@
     UserController userController = new UserController(connectionMaker);
 
     boolean result = userController.insert(userDTO);
-
+    
     if (result) {
         response.sendRedirect("/index.jsp");
     } else {

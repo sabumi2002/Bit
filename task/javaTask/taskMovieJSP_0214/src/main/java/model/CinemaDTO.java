@@ -8,5 +8,7 @@ public class CinemaDTO {
     String name;
     String location;
     String phoneNumber;
+    String img;
+    int room;
 
 }

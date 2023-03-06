@@ -1,5 +1,6 @@
 package controller;
 
+import com.mysql.cj.result.StringValueFactory;
 import connector.ConnectionMaker;
 import model.ScheduleDTO;
 
@@ -8,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ScheduleController {
     private Connection connection;
@@ -17,14 +19,15 @@ public class ScheduleController {
     }
 
     public void insert(ScheduleDTO s) {
-        String query = "INSERT INTO `movie`.`schedule`(`movie_id`, `cinema_id`, `running_time`) " +
-                "VALUES(?, ?, ?)";
+        String query = "INSERT INTO `movie`.`schedule`(`movie_id`, `cinema_id`, `running_time`, `screening_date`, `room`) " +
+                "VALUES(?, ?, ?, NOW(), ?)";
 
         try {
             PreparedStatement pstmt = connection.prepareStatement(query);
             pstmt.setInt(1, s.getMovieId());
             pstmt.setInt(2, s.getCinemaId());
             pstmt.setString(3, s.getRunningTime());
+            pstmt.setInt(4, s.getRoom());
 
             pstmt.executeUpdate();
 
@@ -34,13 +37,14 @@ public class ScheduleController {
         }
     }
 
-    public ArrayList<ScheduleDTO> selectAll() {
+    public ArrayList<ScheduleDTO> selectAll(int cinema) {
         ArrayList<ScheduleDTO> list = new ArrayList<>();
 
-        String query = "SELECT * FROM `schedule` ORDER BY `id` DESC";
+        String query = "SELECT * FROM `schedule` WHERE `cinema_id`= ?";
 
         try {
             PreparedStatement pstmt = connection.prepareStatement(query);
+            pstmt.setInt(1, cinema);
             ResultSet resultSet = pstmt.executeQuery();
 
             while (resultSet.next()) {
@@ -49,6 +53,8 @@ public class ScheduleController {
                 s.setMovieId(resultSet.getInt("movie_id"));
                 s.setCinemaId(resultSet.getInt("cinema_id"));
                 s.setRunningTime(resultSet.getString("running_time"));
+                s.setScreeningDate(resultSet.getTimestamp("screening_date"));
+                s.setRoom(resultSet.getInt("room"));
 
                 list.add(s);
             }
@@ -77,6 +83,8 @@ public class ScheduleController {
                 s.setMovieId(resultSet.getInt("movie_id"));
                 s.setCinemaId(resultSet.getInt("cinema_id"));
                 s.setRunningTime(resultSet.getString("running_time"));
+                s.setScreeningDate(resultSet.getTimestamp("screening_date"));
+                s.setRoom(resultSet.getInt("room"));
             }
 
             resultSet.close();
@@ -89,11 +97,12 @@ public class ScheduleController {
     }
 
     public void update(ScheduleDTO s) {
-        String query = "UPDATE `movie`.`schedule` SET `running_time` = ? WHERE `id` = ?";
+        String query = "UPDATE `movie`.`schedule` SET `running_time` = ?, `room`=? WHERE `id` = ?";
         try {
             PreparedStatement pstmt = connection.prepareStatement(query);
             pstmt.setString(1, s.getRunningTime());
-            pstmt.setInt(2, s.getId());
+            pstmt.setInt(2, s.getRoom());
+            pstmt.setInt(3, s.getId());
 
             pstmt.executeUpdate();
 
@@ -103,7 +112,7 @@ public class ScheduleController {
         }
     }
 
-    public void delete(int id){
+    public void delete(int id) {
         String query = "DELETE FROM `movie`.`schedule` WHERE `id` = ?";
 
         try {
@@ -116,5 +125,127 @@ public class ScheduleController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    // 극장이 갖고있는 영화번호 리스트
+    public ArrayList<Integer> cinemaMovieList(int cinema) {
+        String query = "SELECT DISTINCT movie_id FROM movie.schedule\n" +
+                "WHERE cinema_id = ?";
+        ArrayList<Integer> list = new ArrayList<>();
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(query);
+            pstmt.setInt(1, cinema);
+
+            ResultSet resultSet = pstmt.executeQuery();
+
+            while (resultSet.next()) {
+                int movieid = resultSet.getInt("movie_id");
+                list.add(movieid);
+            }
+
+            resultSet.close();
+            pstmt.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public ArrayList<ScheduleDTO> selectAll(int cinemaId, int movieId) {
+        ArrayList<ScheduleDTO> list = new ArrayList<>();
+
+        String query = "SELECT * FROM `schedule` WHERE `cinema_id`= ? AND `movie_id`= ?\n" +
+                "ORDER BY `running_time`";
+
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(query);
+            pstmt.setInt(1, cinemaId);
+            pstmt.setInt(2, movieId);
+            ResultSet resultSet = pstmt.executeQuery();
+
+            while (resultSet.next()) {
+                ScheduleDTO s = new ScheduleDTO();
+                s.setId(resultSet.getInt("id"));
+                s.setMovieId(resultSet.getInt("movie_id"));
+                s.setCinemaId(resultSet.getInt("cinema_id"));
+                s.setRunningTime(resultSet.getString("running_time"));
+                s.setRoom(resultSet.getInt("room"));
+
+                list.add(s);
+            }
+
+            resultSet.close();
+            pstmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
+    public String minuteToHour(String time, int minute) {
+//        HashMap<String, String> result = new HashMap<>();
+        String result = "";
+
+        int h = minute / 60;
+        int m = minute % 60;
+
+        int baseTime = Integer.parseInt(time.replace(":", ""));
+
+        int baseHour = baseTime / 100;
+        int baseMinute = baseTime % 100;
+
+
+        baseHour += h;
+        baseMinute += m;
+
+        if (baseMinute >= 60) {
+            baseHour++;
+            baseMinute = baseMinute % 60;
+        }
+        if (baseHour >= 24) {
+            baseHour = baseHour % 24;
+        }
+
+
+        String tempHour;
+        String tempMinute;
+
+        if (baseHour < 10) {
+            tempHour = "0" + baseHour;
+        } else {
+            tempHour = Integer.toString(baseHour);
+        }
+        if (baseMinute < 10) {
+            tempMinute = "0" + baseMinute;
+        } else {
+            tempMinute = Integer.toString(baseMinute);
+        }
+
+
+        result = tempHour + ":" + tempMinute;
+
+
+        return result;
+    }
+
+
+    public int HourToMinute(String time) {
+        int result = 0;
+
+        time = time.replace(":", "");
+
+        int tempTime = Integer.parseInt(time);
+
+
+        int h = tempTime / 100;
+        int m = tempTime % 100;
+
+
+        result = (h * 60) + m;
+
+
+        return result;
     }
 }

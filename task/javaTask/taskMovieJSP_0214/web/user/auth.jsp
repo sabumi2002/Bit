@@ -15,6 +15,8 @@
 </head>
 <body>
 <%
+    String currentPage = (String) session.getAttribute("currentPage");
+
     ConnectionMaker connectionMaker = new MySqlConnectionMaker();
     UserController userController = new UserController(connectionMaker);
 
@@ -25,9 +27,9 @@
 
     String address;
     if(userDTO == null){
-        address = "/index.jsp";
+        address = currentPage;
     }else{
-        address = "/index.jsp";
+        address = currentPage;
         session.setAttribute("logIn", userDTO);
     }
 

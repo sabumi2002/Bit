@@ -10,11 +10,13 @@ import java.sql.SQLException;
 
 public class UserController {
     Connection connection;
-    public UserController(ConnectionMaker connectionMaker){
+
+    public UserController(ConnectionMaker connectionMaker) {
         this.connection = connectionMaker.makeConnection();
     }
-    public boolean insert(UserDTO userDTO){
-        String query= "INSERT INTO `user`(`username`, `password`, `nickname`) VALUE(?, ?, ?)";
+
+    public boolean insert(UserDTO userDTO) {
+        String query = "INSERT INTO `user`(`username`, `password`, `nickname`) VALUE(?, ?, ?)";
 
         try {
             PreparedStatement pstmt = connection.prepareStatement(query);
@@ -31,6 +33,7 @@ public class UserController {
 
         return true;
     }
+
     public UserDTO auth(String username, String password) {
         String query = "SELECT * FROM `user` WHERE `username` = ? AND `password` = ?";
         try {
@@ -45,7 +48,7 @@ public class UserController {
                 userDTO.setId(resultSet.getInt("id"));
                 userDTO.setUsername(resultSet.getString("username"));
                 userDTO.setNickname(resultSet.getString("nickname"));
-
+                userDTO.setRank(resultSet.getInt("rank"));
                 return userDTO;
             }
 
@@ -91,6 +94,7 @@ public class UserController {
         }
     }
 
+
     public UserDTO selectOne(int id) {
         UserDTO u = null;
         String query = "SELECT * FROM `user` WHERE `id` = ?";
@@ -103,7 +107,9 @@ public class UserController {
                 u = new UserDTO();
                 u.setId(resultSet.getInt("id"));
                 u.setNickname(resultSet.getString("nickname"));
+                u.setRank(resultSet.getInt("rank"));
             }
+
 
             resultSet.close();
             pstmt.close();
@@ -115,3 +121,26 @@ public class UserController {
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
