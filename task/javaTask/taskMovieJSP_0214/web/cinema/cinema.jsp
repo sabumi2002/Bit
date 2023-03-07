@@ -174,7 +174,7 @@
                                                 <p>${m.room}관</p>
                                                 <div class="items"
                                                      onclick="location.href='/schedule/schedule.jsp?id=${m.id}'">
-                                                    <p>${m.runningTime}</p>
+                                                    <p>${m.startTime}</p>
                                                 </div>
                                             </div>
                                         </c:forEach>

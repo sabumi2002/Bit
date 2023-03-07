@@ -74,7 +74,7 @@ public class MovieController {
     public ArrayList<MovieDTO> selectAll(String rank) {
         ArrayList<MovieDTO> list = new ArrayList<>();
 
-        String query = "SELECT * FROM `movie`.`movie` WHERE `rank` = ? ORDER BY `id` ";
+        String query = "SELECT distinct * FROM `movie`.`movie` WHERE `rank` = ? ORDER BY `id` ";
 
         try {
             PreparedStatement pstmt = connection.prepareStatement(query);

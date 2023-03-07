@@ -27,6 +27,8 @@
     <title>상영정보 추가 page</title>
 </head>
 <%@include file="/main/header_nav.jsp" %>
+
+
 <body>
 <div>
     <div class="inner">
@@ -36,9 +38,20 @@
         <div class="data_box">
             <div class="mb-3" style="display: flex; width: 100%">
                 <span class="input-group-text">관 선택</span>
-                <select class="form-select form-select-lg mb-0" id="input-room"
+                <select class="insertContent form-select form-select-lg mb-0" id="input-room"
                         aria-label=".form-select-lg example"
                         name="room" style="display: block; width: 100%">
+
+                </select>
+
+
+            </div>
+
+            <div class="mb-3" style="display: flex; width: 100%">
+                <span class="input-group-text">영화등급</span>
+                <select class="insertContent form-select form-select-lg mb-0" id="input-rank" onchange="selectRank()"
+                        aria-label=".form-select-lg example"
+                        name="rank" style="display: block; width: 100%">
                     <option value="all" selected>all</option>
                     <option value="12">12</option>
                     <option value="15">15</option>
@@ -47,52 +60,66 @@
 
 
             </div>
-
             <div class="mb-3" style="display: flex; width: 100%">
-                <span class="input-group-text">영화 선택</span>
-                <div style="width: 100%;">
-                    <select class="form-select form-select-lg mb-0" id="input-rank"
-                            aria-label=".form-select-lg example"
-                            name="rank" style="display: block; width: 100%">
-                        <option value="all" selected>all</option>
-                        <option value="12">12</option>
-                        <option value="15">15</option>
-                        <option value="19">19</option>
-                    </select>
-                    <select class="form-select form-select-lg mb-0" id="input-movie"
-                            aria-label=".form-select-lg example"
-                            name="movie" style="display: block; width: 100%">
-                        <option value="all" selected>all</option>
-                        <option value="12">12</option>
-                        <option value="15">15</option>
-                        <option value="19">19</option>
-                    </select>
-                </div>
+                <span class="input-group-text">영화선택</span>
+                <select class="insertContent form-select form-select-lg mb-0" id="input-movie" onchange="selectMovie()"
+                        aria-label=".form-select-lg example"
+                        name="movie" style="display: block; width: 100%;">
 
-
+                </select>
             </div>
 
 
             <div class="input-group mb-3">
                 <span class="input-group-text">날짜</span>
-                <input type="text" id="input-location" name="location" class="form-control"
-                       aria-label="Sizing example input"
-                       aria-describedby="inputGroup-sizing-default">
-            </div>
+                <%--                <input type="text" id="input-location" name="location" class="form-control"--%>
+                <%--                       aria-label="Sizing example input"--%>
+                <%--                       aria-describedby="inputGroup-sizing-default">--%>
+                <button class="insertContent cal-button form-control" onclick="calButton()">날짜선택하기</button>
 
+            </div>
+            <input type="hidden" id="input-date">
+            <section class="cal">
+                <div>
+                    <table class="Calendar">
+                        <thead>
+                        <tr>
+                            <td onClick="prevCalendar();" style="cursor:pointer;">&#60;</td>
+                            <td colspan="5">
+                                <span id="calYear"></span>년
+                                <span id="calMonth"></span>월
+                            </td>
+                            <td onClick="nextCalendar();" style="cursor:pointer;">&#62;</td>
+                        </tr>
+                        <tr>
+                            <td>일</td>
+                            <td>월</td>
+                            <td>화</td>
+                            <td>수</td>
+                            <td>목</td>
+                            <td>금</td>
+                            <td>토</td>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
 
             <div class="input-group mb-3">
                 <span class="input-group-text">시간</span>
-                <input type="text" id="input-phoneNumber" name="phoneNumber" class="form-control"
+                <input type="time" id="input-startTime" name="startTime" class="insertContent form-control"
                        aria-label="Sizing example input"
                        aria-describedby="inputGroup-sizing-default">
             </div>
 
             <div class="util">
-                <button type="button" class="cancel" onclick="location.href='/cinema/cinema.jsp'">
+                <button type="button" class="cancel" onclick="cancelButton()">
                     취소
                 </button>
-                <button type="submit" class="check" onclick="fileUpload()">
+                <button type="submit" class="check" onclick="checkButton()">
                     확인
                 </button>
             </div>

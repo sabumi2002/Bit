@@ -9,6 +9,7 @@ import controller.ScheduleController;
 import model.CinemaDTO;
 import model.MovieDTO;
 import model.ScheduleDTO;
+import model.UserDTO;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -27,7 +28,10 @@ public class ScheduleServlet extends HttpServlet {
         JsonObject result = new JsonObject();
 
         try{
+
             int id = Integer.parseInt(request.getParameter("id"));
+            session.setAttribute("currentPage", "/schedule/schedule.jsp?id="+id);
+
 
             ConnectionMaker connectionMaker = new MySqlConnectionMaker();
             ScheduleController scheduleController = new ScheduleController(connectionMaker);
@@ -41,8 +45,8 @@ public class ScheduleServlet extends HttpServlet {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일 (EEE)");
 
 //            상영시간 start , end
-            String startTime = scheduleDTO.getRunningTime();
-            String endTime = scheduleController.minuteToHour(startTime, Integer.parseInt(movieDTO.getLength()));
+            String startTime = scheduleDTO.getStartTime();
+            String endTime = scheduleDTO.getEndTime();
 
             result.addProperty("id", id);
             result.addProperty("startRunningTime", startTime);
@@ -57,6 +61,8 @@ public class ScheduleServlet extends HttpServlet {
             result.addProperty("cinemaPhone", cinemaDTO.getPhoneNumber());
 
             result.addProperty("status", "success");
+            UserDTO logIn = (UserDTO) session.getAttribute("logIn");
+            result.addProperty("logInRank", logIn.getRank());
 
         }catch(Exception e){
             result.addProperty("status", "fail");

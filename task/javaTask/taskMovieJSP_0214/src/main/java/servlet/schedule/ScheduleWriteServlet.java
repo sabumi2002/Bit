@@ -26,8 +26,19 @@ public class ScheduleWriteServlet extends HttpServlet {
 
 
         try{
+            if(request.getParameter("id")==null){
+                int movieId = Integer.parseInt(request.getParameter("movieId"));
+                ConnectionMaker connectionMaker = new MySqlConnectionMaker();
+                MovieController movieController = new MovieController(connectionMaker);
+                MovieDTO m = movieController.selectOne(movieId);
+                result.addProperty("movieImg", m.getImg());
+                throw new NullPointerException();
+            }
+
             int id = Integer.parseInt(request.getParameter("id"));
             String movieRank = request.getParameter("movieRank");
+
+
 
             ConnectionMaker connectionMaker= new MySqlConnectionMaker();
             CinemaController cinemaController = new CinemaController(connectionMaker);
@@ -51,10 +62,13 @@ public class ScheduleWriteServlet extends HttpServlet {
             result.addProperty("movieList", movieList.toString());
             result.addProperty("status", "success");
 
-        }catch (Exception e){
+        } catch (NullPointerException e){
+            result.addProperty("status", "fail");
+        } catch (Exception e){
             result.addProperty("status", "fail");
         }
 
+        writer.print(result);
 
     }
 

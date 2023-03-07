@@ -152,27 +152,21 @@ function checkButton() {
     let startTime = $(document.getElementById("input-startTime")).val();
 
 
-    console.log("date: " + date);
-    console.log("room: " + room);
-    console.log("movieId: " + movieId);
-    console.log("startTime: " + startTime);
 
     let data = {
-        "cinemaId": id,
+        "scheduleId": id,
         "date": date,
         "movieId": movieId,
         "startTime": startTime,
         "room": room
     }
     $.ajax({
-        url: "/schedule/ScheduleInsertServlet",
+        url: "/schedule/ScheduleUpdateServlet",
         type: "post",
         data: data,
         success: (message) => {
             let result = JSON.parse(message);
-            console.log(result.status);
             if (result.status == "null") {
-                console.log("if null");
                 Swal.fire({
                     icon: 'error',
                     title: '!!! RunningTime ERROR !!!',
@@ -180,7 +174,7 @@ function checkButton() {
                     showConfirmButton: false,
                     // timer: 1500
                 }).then(() => {
-                    location.href = "/schedule/write.jsp?id=" + id;
+                    location.href = "/schedule/update.jsp?id=" + id;
                 })
             } else {
                 if (result.status == "success") {
@@ -191,7 +185,7 @@ function checkButton() {
                         showConfirmButton: false,
                         timer: 1500
                     }).then(() => {
-                        location.href = "/cinema/cinema-detail.jsp?id=" + id;
+                        location.href = "/schedule/schedule.jsp?id=" + id;
                     })
                 } else {
                     Swal.fire({
@@ -202,7 +196,7 @@ function checkButton() {
                         showConfirmButton: false,
                         // timer: 1500
                     }).then(() => {
-                        location.href = "/schedule/write.jsp?id=" + id;
+                        location.href = "/schedule/update.jsp?id=" + id;
                     })
                 }
             }
@@ -213,7 +207,7 @@ function checkButton() {
 
 function cancelButton() {
     let id = new URLSearchParams(window.location.search).get("id");
-    location.href = "/cinema/cinema-detail.jsp?id=" + id;
+    location.href = "/schedule/schedule.jsp?id=" + id;
 }
 
 

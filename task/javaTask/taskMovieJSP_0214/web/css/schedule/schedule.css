@@ -61,6 +61,7 @@
     width: 80%;
     display: flex;
 }
+
 .tit p{
     margin-top: 20px;
     font-size: 40px;
@@ -113,7 +114,7 @@
     /*margin-bottom: 10px;*/
 
 }
-.scheduleBox {
-    /*font-size: 20px;*/
+.schedule-admin{
+    border-radius: 10px 10px 10px 10px;
 }
 

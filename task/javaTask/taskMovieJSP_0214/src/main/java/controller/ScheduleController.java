@@ -2,12 +2,15 @@ package controller;
 
 import com.mysql.cj.result.StringValueFactory;
 import connector.ConnectionMaker;
+import connector.MySqlConnectionMaker;
+import model.MovieDTO;
 import model.ScheduleDTO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -19,15 +22,21 @@ public class ScheduleController {
     }
 
     public void insert(ScheduleDTO s) {
-        String query = "INSERT INTO `movie`.`schedule`(`movie_id`, `cinema_id`, `running_time`, `screening_date`, `room`) " +
-                "VALUES(?, ?, ?, NOW(), ?)";
+        String query = "INSERT INTO `movie`.`schedule`(`movie_id`, `cinema_id`, `start_time`, `end_time`, `screening_date`, `room`) " +
+                "VALUES(?, ?, ?, ?, ?, ?)";
 
         try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
             PreparedStatement pstmt = connection.prepareStatement(query);
             pstmt.setInt(1, s.getMovieId());
             pstmt.setInt(2, s.getCinemaId());
-            pstmt.setString(3, s.getRunningTime());
-            pstmt.setInt(4, s.getRoom());
+            pstmt.setString(3, s.getStartTime());
+            pstmt.setString(4, s.getEndTime());
+            pstmt.setString(5, sdf.format(s.getScreeningDate()));
+            pstmt.setInt(6, s.getRoom());
+
+
 
             pstmt.executeUpdate();
 
@@ -52,7 +61,8 @@ public class ScheduleController {
                 s.setId(resultSet.getInt("id"));
                 s.setMovieId(resultSet.getInt("movie_id"));
                 s.setCinemaId(resultSet.getInt("cinema_id"));
-                s.setRunningTime(resultSet.getString("running_time"));
+                s.setStartTime(resultSet.getString("start_time"));
+                s.setEndTime(resultSet.getString("end_time"));
                 s.setScreeningDate(resultSet.getTimestamp("screening_date"));
                 s.setRoom(resultSet.getInt("room"));
 
@@ -82,7 +92,8 @@ public class ScheduleController {
                 s.setId(resultSet.getInt("id"));
                 s.setMovieId(resultSet.getInt("movie_id"));
                 s.setCinemaId(resultSet.getInt("cinema_id"));
-                s.setRunningTime(resultSet.getString("running_time"));
+                s.setStartTime(resultSet.getString("start_time"));
+                s.setEndTime(resultSet.getString("end_time"));
                 s.setScreeningDate(resultSet.getTimestamp("screening_date"));
                 s.setRoom(resultSet.getInt("room"));
             }
@@ -97,12 +108,15 @@ public class ScheduleController {
     }
 
     public void update(ScheduleDTO s) {
-        String query = "UPDATE `movie`.`schedule` SET `running_time` = ?, `room`=? WHERE `id` = ?";
+        String query = "UPDATE `movie`.`schedule` SET `start_time` = ?, `end_time` = ?, `room`=?, `screening_date`=? WHERE `id` = ?";
         try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             PreparedStatement pstmt = connection.prepareStatement(query);
-            pstmt.setString(1, s.getRunningTime());
-            pstmt.setInt(2, s.getRoom());
-            pstmt.setInt(3, s.getId());
+            pstmt.setString(1, s.getStartTime());
+            pstmt.setString(2, s.getEndTime());
+            pstmt.setInt(3, s.getRoom());
+            pstmt.setString(4, sdf.format(s.getScreeningDate()));
+            pstmt.setInt(5, s.getId());
 
             pstmt.executeUpdate();
 
@@ -156,7 +170,7 @@ public class ScheduleController {
         ArrayList<ScheduleDTO> list = new ArrayList<>();
 
         String query = "SELECT * FROM `schedule` WHERE `cinema_id`= ? AND `movie_id`= ?\n" +
-                "ORDER BY `running_time`";
+                "ORDER BY `start_time`";
 
         try {
             PreparedStatement pstmt = connection.prepareStatement(query);
@@ -169,8 +183,10 @@ public class ScheduleController {
                 s.setId(resultSet.getInt("id"));
                 s.setMovieId(resultSet.getInt("movie_id"));
                 s.setCinemaId(resultSet.getInt("cinema_id"));
-                s.setRunningTime(resultSet.getString("running_time"));
+                s.setStartTime(resultSet.getString("start_time"));
+                s.setEndTime(resultSet.getString("end_time"));
                 s.setRoom(resultSet.getInt("room"));
+                s.setScreeningDate(resultSet.getTimestamp("screening_date"));
 
                 list.add(s);
             }
@@ -183,6 +199,41 @@ public class ScheduleController {
 
         return list;
     }
+
+    public ArrayList<ScheduleDTO> selectAllCinemaRoom(int cinemaId, int room) {
+        ArrayList<ScheduleDTO> list = new ArrayList<>();
+
+        String query = "SELECT * FROM `schedule` WHERE `cinema_id`= ? AND `room`= ?\n" +
+                "ORDER BY `start_time`";
+
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(query);
+            pstmt.setInt(1, cinemaId);
+            pstmt.setInt(2, room);
+            ResultSet resultSet = pstmt.executeQuery();
+
+            while (resultSet.next()) {
+                ScheduleDTO s = new ScheduleDTO();
+                s.setId(resultSet.getInt("id"));
+                s.setMovieId(resultSet.getInt("movie_id"));
+                s.setCinemaId(resultSet.getInt("cinema_id"));
+                s.setStartTime(resultSet.getString("start_time"));
+                s.setEndTime(resultSet.getString("end_time"));
+                s.setRoom(resultSet.getInt("room"));
+                s.setScreeningDate(resultSet.getTimestamp("screening_date"));
+
+                list.add(s);
+            }
+
+            resultSet.close();
+            pstmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
 
     public String minuteToHour(String time, int minute) {
 //        HashMap<String, String> result = new HashMap<>();

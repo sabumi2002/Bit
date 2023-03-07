@@ -13,12 +13,13 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-@WebServlet(name = "ScheduleUpdateServlet", value = "/schedule/ScheduleUpdateServlet")
-public class ScheduleUpdateServlet extends HttpServlet {
+@WebServlet(name = "ScheduleInsertServlet", value = "/schedule/ScheduleInsertServlet")
+public class ScheduleInsertServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -35,7 +36,7 @@ public class ScheduleUpdateServlet extends HttpServlet {
 
             int room = Integer.parseInt(request.getParameter("room"));
             int movieId = Integer.parseInt(request.getParameter("movieId"));
-            int scheduleId = Integer.parseInt(request.getParameter("scheduleId"));
+            int cinemaId = Integer.parseInt(request.getParameter("cinemaId"));
             String startTime = request.getParameter("startTime");
             String stringDate = request.getParameter("date");
 
@@ -53,10 +54,8 @@ public class ScheduleUpdateServlet extends HttpServlet {
             int startMinute = scheduleController.HourToMinute(startTime);
             int endMinute = scheduleController.HourToMinute(endTime);
 
-            ScheduleDTO scheduleDTO = scheduleController.selectOne(scheduleId);
 
-
-            ArrayList<ScheduleDTO> scheduleList = scheduleController.selectAllCinemaRoom(scheduleDTO.getCinemaId(), room);
+            ArrayList<ScheduleDTO> scheduleList = scheduleController.selectAllCinemaRoom(cinemaId, room);
             for (ScheduleDTO s : scheduleList) {
                 int start = scheduleController.HourToMinute(s.getStartTime());
                 int end = scheduleController.HourToMinute(s.getEndTime());
@@ -67,13 +66,15 @@ public class ScheduleUpdateServlet extends HttpServlet {
                 }
             }
 
+            ScheduleDTO scheduleDTO = new ScheduleDTO();
             scheduleDTO.setMovieId(movieId);
+            scheduleDTO.setCinemaId(cinemaId);
             scheduleDTO.setStartTime(startTime);
             scheduleDTO.setEndTime(endTime);
             scheduleDTO.setScreeningDate(date);
             scheduleDTO.setRoom(room);
 
-            scheduleController.update(scheduleDTO);
+            scheduleController.insert(scheduleDTO);
 
             result.addProperty("status", "success");
 
@@ -85,5 +86,19 @@ public class ScheduleUpdateServlet extends HttpServlet {
         }
 
         writer.print(result);
+
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
