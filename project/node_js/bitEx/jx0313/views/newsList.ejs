@@ -1,0 +1,111 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>네이버 뉴스 검색 결과</h1>
+<ul>
+    <% for(let i =0; i<newsArray.length; i++){ %>
+        <li><a href="<%=newsArray[i].link%>"><strong><%=newsArray[i].title%></strong></a>
+            <p><%=newsArray[i].description%></p></li>
+            <%}%>
+</ul>
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"
+        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+     <link href="/semantic/semantic.min.css" type="text/css" rel="stylesheet">
+    <script src="/semantic/semantic.min.js"></script>
+
+    <style>
+        * {
+            padding:0;
+            margin:0;
+            box-sizing:border-box;
+        }
+        
+        html {
+            width:100%;
+            height:100%;
+        }
+        
+        body {
+            width:100%;
+            height:100%;
+            color: #000;
+            background-color: #fff;
+        }
+                
+        .container {
+            margin-right: auto;
+            margin-left: auto;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+        #cardbox {
+            width:60%;
+        }
+
+        #iconImage {
+            display:inline;
+            width:2em;
+            height:2em;
+        }
+        
+        .bottomArea {
+            background-color:rgba(242,248,255,255) !important;
+        }
+    </style>
+    
+</head>
+<body>
+    <div class="container" style="padding-top: 20px;">
+        <form action="/search/news">
+            <input type="text" name="search">
+            <button type="submit">검색</button>
+        </form>
+    </div>
+
+    <div class="container">
+       <br>
+       <div class="ui raised segment">
+             <a class="ui blue ribbon label">검색 리스트</a>
+             <br><br>
+        </div>
+        <% for(let i=0; i<newsArray.length; i++){ 
+            let title = newsArray[i].title;
+            let link = newsArray[i].link;
+            let description = newsArray[i].description;
+            var pubDate = newsArray[i].pubDate;
+        %>
+        <div class="ui blue fluid card">
+            <div class="content">
+                <div class="header"><a href="<%=link%>"><%=title%></a></div>
+                <div class="description">
+                    <br>
+                      <p><%=description%></p>
+               </div>
+                <div class="meta">
+                    <span class="right floated time"><%=pubDate%></span>
+              </div>
+              </div>
+        </div>
+        <% } %>
+   </div>
+</body>
+</html>
+

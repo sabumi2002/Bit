@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        td, tr, th {
+           border:1px solid black; 
+        }
+        #userButton:hover{
+            color: blue;
+        }
+        #userButton {
+            font-size: 20px;
+            border : none;
+            background-color:white;
+            text-decoration-line: underline;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <h1>회원 목록</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>아이디</th>
+                <th>이름</th>
+                <th>나이</th>
+            </tr>
+        </thead>
+        <tbody>
+            <%for (let i=0; i<Users.length; i++){%>
+                <form action="/memberDelete" method="post">
+                    <tr>
+                        <th><button id="userButton" value="<%=Users[i].userId%>"><%=Users[i].userId%></button></th>
+                        <th><p  value="<%=Users[i].userName%>"><%=Users[i].userName%></p></th>
+                        <th><p  value="<%=Users[i].age%>"><%=Users[i].age%></p></th>
+                        <input type="hidden" name="userId" id="userId" value="<%=Users[i].userId%>">
+                        <input type="hidden" id="userName" name="userName" value="<%=Users[i].userName%>">
+                        <input type="hidden" id="age" name="age" value="<%=Users[i].age%>">
+                    </tr>
+                </form>
+            <%}%>
+        </tbody>
+    </table>
+    <br><br><a href="/insert_member">회원가입</a>
+
+</body>
+</html>
