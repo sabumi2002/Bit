@@ -19,6 +19,7 @@
                 login-processing-url="/user/auth"
                 default-target-url="/board/showAll/1"
                 authentication-failure-handler-ref="userAuthFailHandler"
+                authentication-success-handler-ref="userAuthSuccessHandler"
                 login-page="/"/>
     </security:http>
     <security:authentication-manager>

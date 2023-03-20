@@ -38,6 +38,7 @@ public class BoardController {
 ////            model.addAttribute("message", "다시 로그인해주세요.");
 //            return "redirect:/";
 //        }
+
         System.out.println(authentication.getName());
         System.out.println(authentication.getAuthorities());
 
@@ -51,10 +52,10 @@ public class BoardController {
 
     @GetMapping("showOne/{id}")
     public String showOne(HttpSession session, RedirectAttributes redirectAttributes, Model model, @PathVariable int id) {
-        if (session.getAttribute("logIn") == null) {
-            redirectAttributes.addFlashAttribute("message", "다시 로그인 해주세요.");
-            return "redirect:/";
-        }
+//        if (session.getAttribute("logIn") == null) {
+//            redirectAttributes.addFlashAttribute("message", "다시 로그인 해주세요.");
+//            return "redirect:/";
+//        }
 
         BoardDTO b = boardService.selectOne(id);
         if (b == null) {
@@ -138,10 +139,10 @@ public class BoardController {
     @GetMapping("update/{id}")
     public String showUpdate(HttpSession session, RedirectAttributes redirectAttributes, Model model, @PathVariable int id) {
         UserDTO logIn = (UserDTO) session.getAttribute("logIn");
-        if (logIn == null) {
-            redirectAttributes.addFlashAttribute("message", "다시 로그인해주세요.");
-            return "redirect:/";
-        }
+//        if (logIn == null) {
+//            redirectAttributes.addFlashAttribute("message", "다시 로그인해주세요.");
+//            return "redirect:/";
+//        }
 
         BoardDTO b = boardService.selectOne(id);
         if (b == null || b.getWriterId() != logIn.getId()) {
@@ -172,23 +173,23 @@ public class BoardController {
 //        return "redirect:/board/showOne/"+boardDTO.getId();
 //    }
 //
-//    @GetMapping("delete/{id}")
-//    public String delete(HttpSession session, RedirectAttributes redirectAttributes, @PathVariable int id){
-//        UserDTO logIn = (UserDTO) session.getAttribute("logIn");
+    @GetMapping("delete/{id}")
+    public String delete(HttpSession session, RedirectAttributes redirectAttributes, @PathVariable int id){
+        UserDTO logIn = (UserDTO) session.getAttribute("logIn");
 //        if(logIn == null){
 //            redirectAttributes.addFlashAttribute("message", "다시 로그인해주세요.");
 //            return "redirect:/";
 //        }
-//
-//        BoardDTO b = boardService.selectOne(id);
-//        if(b == null|| b.getWriterId() != logIn.getId()){
-//            redirectAttributes.addFlashAttribute("message", "유효하지 않는 접근입니다.");
-//            return "redirect:/board/showAll/1";
-//        }
-//
-//        boardService.delete(id);
-//        return "redirect:/board/showAll/1";
-//    }
+
+        BoardDTO b = boardService.selectOne(id);
+        if(b == null|| b.getWriterId() != logIn.getId()){
+            redirectAttributes.addFlashAttribute("message", "유효하지 않는 접근입니다.");
+            return "redirect:/board/showAll/1";
+        }
+
+        boardService.delete(id);
+        return "redirect:/board/showAll/1";
+    }
 
     @GetMapping("write")
     public String showWrite() {

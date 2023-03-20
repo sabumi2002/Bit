@@ -3,9 +3,9 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd">
 
+    <!--    db위치 알려주기-->
     <util:properties id="dataSourceProperties" location="classpath:config/mybatis/db.properties"/>
-
-<!--    db 설정-->
+    <!--    db 설정-->
     <bean id="datasource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="#{dataSourceProperties['datasource.driver']}"/>
         <property name="url" value="#{dataSourceProperties['datasource.url']}"/>
@@ -13,7 +13,7 @@
         <property name="password" value="#{dataSourceProperties['datasource.password']}"/>
     </bean>
 
-<!--    mybatis 설정-->
+    <!--    mybatis 설정-->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="datasource"/>
         <property name="configLocation" value="classpath:config/mybatis/mybatis-config.xml"/>
@@ -21,4 +21,6 @@
     <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
         <constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"/>
     </bean>
+
+
 </beans>

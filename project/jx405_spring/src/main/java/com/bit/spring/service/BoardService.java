@@ -68,4 +68,8 @@ public class BoardService {
     public void update(BoardDTO attempt){
         session.update(NAMESPACE + ".update", attempt);
     }
+
+    public void delete(int id) {
+        session.delete(NAMESPACE + ".delete", id);
+    }
 }
