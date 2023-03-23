@@ -12,5 +12,6 @@
 </head>
 <body>
 <h3>silver</h3>
+<button onclick="location.href='/user/updateDelete'"></button>
 </body>
 </html>

@@ -38,7 +38,8 @@ window.addEventListener("load", mainF);
 
 
 $(document).ready(function () {
-    let state = $('#state').value();
+    let state = $('#state').val();
+    console.log(state);
     if(state == "loginFail"){
         console.log("loginFail");
         Swal.fire({
@@ -74,7 +75,21 @@ $(document).ready(function () {
         })
     }
 
-
-
-
 });
+
+function execDaumPostcode() {
+    new daum.Postcode( {
+        oncomplete: function( data ) {
+            document.getElementById( 'zip-code' ).value = data.zonecode;
+            document.getElementById( 'address-1' ).value = data.address;
+            document.getElementById( 'address-1-1' ).value = data.jibunAddress;
+            document.getElementById( 'address-2' ).focus();
+        }
+    } ).open();
+}
+function execDaumPostcodeReset() {
+    document.getElementById( 'zip-code' ).value = null;
+    document.getElementById( 'address-1' ).value = null;
+    document.getElementById( 'address-1-1' ).value = null;
+    document.getElementById( 'address-2' ).value = null;
+}

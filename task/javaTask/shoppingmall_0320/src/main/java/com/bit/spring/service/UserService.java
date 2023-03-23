@@ -28,15 +28,18 @@ public class UserService implements UserDetailsService {
     public UserDTO auth(UserDTO attempt) {
         return session.selectOne(NAMESPACE + ".auth", attempt);
     }
+    public UserDTO selectByUsername(String username){
+        return session.selectOne(NAMESPACE + ".validate", username);
+    }
 
     public boolean validate(String username) {
         return session.selectOne(NAMESPACE+ ".validate", username) == null;
     }
 
+
     public boolean register(UserDTO attempt) {
         if (validate(attempt.getUsername())) {
             attempt.setPassword(passwordEncoder.encode(attempt.getPassword()));
-            System.out.println("passwordEncoder: "+attempt);
             session.insert(NAMESPACE + ".register", attempt);
             return true;
         }else{
@@ -44,9 +47,15 @@ public class UserService implements UserDetailsService {
         }
     }
 
+    public UserDTO selectOne(int id){
+        return session.selectOne(NAMESPACE + ".selectOne", id);
+    }
     public void update(UserDTO attempt) {
         attempt.setPassword(passwordEncoder.encode(attempt.getPassword()));
         session.update(NAMESPACE + ".update", attempt);
+    }
+    public void addressUpdate(UserDTO attempt) {
+        session.update(NAMESPACE + ".addressUpdate", attempt);
     }
     public void delete(int id) {
         session.delete(NAMESPACE + ".delete", id);
