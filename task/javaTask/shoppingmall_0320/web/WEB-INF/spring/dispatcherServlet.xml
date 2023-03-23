@@ -15,5 +15,6 @@
 
     <context:component-scan base-package="com.bit.spring"/>
     <mvc:resources mapping="/resources/**" location="/resources/"/>
+    <mvc:resources mapping="/js/**" location="/js/"/>
 
 </beans>

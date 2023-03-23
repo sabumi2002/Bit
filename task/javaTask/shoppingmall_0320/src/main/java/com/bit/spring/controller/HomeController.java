@@ -10,6 +10,6 @@ public class HomeController {
     @RequestMapping("/")
     public String showIndex(Model model){
 
-        return "index";
+        return "redirect:/user/login";
     }
 }
