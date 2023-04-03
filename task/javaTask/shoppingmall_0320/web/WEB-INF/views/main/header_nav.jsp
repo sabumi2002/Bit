@@ -1,4 +1,6 @@
-<%@ page import="com.bit.spring.model.UserDTO" %><%--<%@ page import="model.UserDTO" %>&lt;%&ndash;--%>
+<%@ page import="com.bit.spring.model.UserDTO" %>
+<%@ page import="java.util.List" %>
+<%@ page import="com.bit.spring.model.CategoryDTO" %><%--<%@ page import="model.UserDTO" %>&lt;%&ndash;--%>
 <%--  Created by IntelliJ IDEA.--%>
 <%--  User: Sabeom--%>
 <%--  Date: 2023-02-21--%>
@@ -13,20 +15,23 @@
         pageContext.setAttribute("logIn", (UserDTO) session.getAttribute("logIn"));
     %>
     <link href="/resources/css/main/nav.css" rel="stylesheet">
-    <link href="/resources/css/bootstrap.min.css" rel="stylesheet">
+
 
     <script defer src="/js/main/nav.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
     <%--    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"--%>
     <%--            integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"--%>
     <%--            crossorigin="anonymous"></script>--%>
 </head>
-<body>
+
+<%--onload="initNav()"--%>
+<body onload="initNav()">
 <header class="navbar-light bg-light">
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container-fluid">
-                <div>
-                    <button style="display: inline-block" class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            <div style="flex-wrap: nowrap;" class="container-fluid">
+                <div style="display: flex; flex-wrap: nowrap;" class="align-items-center">
+                    <button style="display: inline-block" class="navbar-toggler h-50" type="button" data-bs-toggle="collapse"
                             data-bs-target="#navbarHeader"
                             aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
@@ -38,9 +43,9 @@
                 </div>
                 <%--            <a class="navbar-brand" href="#">Navbar</a>--%>
 
-                <form class="search d-flex justify-content-end" action="" method="get">
-                    <input class="form-control mb-0" type="search" placeholder="Search" name="keyword">
-                    <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+                <form class="search d-flex justify-content-end align-items-center" action="" method="get">
+                    <input class="form-control h-50" type="search" placeholder="Search" name="keyword">
+                    <button class="h-50" type="submit">Search</button>
                 </form>
 
                 <div class="d-flex">
@@ -62,8 +67,10 @@
                                        aria-haspopup="true" aria-expanded="false">${logIn.nickname}</a>
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item" href="/user/logOut">로그아웃</a>
+                                        <a class="dropdown-item" href="/mypage/showMypage">마이페이지</a>
                                         <a class="dropdown-item" href="/user/updateDelete">개인정보수정</a>
                                         <a class="dropdown-item" href="/address/manager">배송지 관리</a>
+                                        <a class="dropdown-item" href="/shop/write">상품 등록</a>
 
                                             <%--                                <a class="dropdown-item" href="#">Something else here</a>--%>
                                             <%--                                <div class="dropdown-divider"></div>--%>
@@ -74,7 +81,7 @@
                         </c:otherwise>
                     </c:choose>
                     <button class="navbar-cart"
-                            onclick="location.href=''">
+                            onclick="location.href='/mypage/showBasket'">
                         <img src="/resources/images/main/shopping_cart.png">
                     </button>
                 </div>
@@ -84,16 +91,16 @@
         <div class="collapse navbar-light bg-light" id="navbarHeader">
             <div class="container">
                 <div class="row">
-                    <ul class="headerMenu">
+                    <ul id="hederMenu" class="headerMenu">
                         <li class="current">
-                            <a href="">영화 찾기</a>
+                            <a href="/shop/showAll">전체</a>
                         </li>
-                        <li class="current">
-                            <a href="">극장 찾기</a>
-                        </li>
-                        <li class="current">
-                            <a href="">상영 정보</a>
-                        </li>
+                        <c:forEach items="${categoryList}" var="item">
+                            <li class="current">
+                                <a href="/shop/showAll?id=${item.id}">${item.category}</a>
+                            </li>
+                        </c:forEach>
+
                     </ul>
                 </div>
             </div>
