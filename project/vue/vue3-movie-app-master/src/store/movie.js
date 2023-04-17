@@ -60,13 +60,14 @@ export default {
           ...payload,
           page: 1
         })
+        // Search, totalResults에 res.data안에있는 search, totalResults 데이터를 넣는다
         const { Search, totalResults } = res.data
         commit('updateState', {
           movies: _uniqBy(Search, 'imdbID')
         })
 
         // ceil = 올림!
-        const total = parseInt(totalResults, 10)
+        const total = parseInt(totalResults, 10)  // res로 받은 totalResult가 string데이터이기 때문에 int로 변환해주기
         const pageLength = Math.ceil(total / 10) // 총 페이지의 길이
 
         // 추가 요청!
@@ -79,7 +80,9 @@ export default {
             })
             const { Search } = res.data
             commit('updateState', {
+              // 새로운 요청이 들어갈때마다 새로운 배열을 만들어서 다시 무비스에 할당하겠다.
               movies: [
+                // ... : 전개연산자
                 ...state.movies,
                 ..._uniqBy(Search, 'imdbID')
               ]
