@@ -64,7 +64,16 @@ export default {
                     icon: false,
                 })
             })
-        }
+        },
+        // 처방 ----------------------------------------------
+        // modal에서 historyWrite로 상병테이블 추가
+        addWriteCbList: (state, items) => {
+            state.writeCbList= [...items];
+        },
+        // remove writeSbList   write상병테이블 한줄 삭제
+        removeWriteCbList: (state, item) => {
+            state.writeCbList = state.writeCbList.filter(param => param.id != item.id);
+        },
     },
     actions: {
         fetchSbDummyData({commit}, filterMessage) {
