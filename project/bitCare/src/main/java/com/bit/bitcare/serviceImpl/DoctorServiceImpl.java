@@ -1,8 +1,10 @@
 package com.bit.bitcare.serviceImpl;
 
+import com.bit.bitcare.dao.DiagnoseDAO;
 import com.bit.bitcare.dao.DiseaseDAO;
 import com.bit.bitcare.dao.EmployeeDAO;
 import com.bit.bitcare.lucene.DiseaseIndexer;
+import com.bit.bitcare.model.DiagnoseDTO;
 import com.bit.bitcare.model.DiseaseDTO;
 import com.bit.bitcare.model.EmployeeDTO;
 import com.bit.bitcare.model.UserCustomDetails;
@@ -23,17 +25,19 @@ import java.util.List;
 @Service
 public class DoctorServiceImpl implements DoctorService {
 
-    private final DiseaseDAO diseaseDAO;
     private DiseaseIndexer diseaseIndexer;
+    private final DiseaseDAO diseaseDAO;
+    private final DiagnoseDAO diagnoseDAO;
 
-    public DoctorServiceImpl(DiseaseDAO diseaseDAO, DiseaseIndexer diseaseIndexer) {
-        this.diseaseDAO = diseaseDAO;
+    public DoctorServiceImpl(DiagnoseDAO diagnoseDAO, DiseaseDAO diseaseDAO, DiseaseIndexer diseaseIndexer) {
         this.diseaseIndexer = diseaseIndexer;
+        this.diseaseDAO = diseaseDAO;
+        this.diagnoseDAO = diagnoseDAO;
     }
 
     // 상병(더미)테이블 search
     @Override
-    public JsonObject filterSearch(String filterMessage) {
+    public JsonObject sbFilterSearch(String filterMessage) {
         JsonObject result = new JsonObject();
         List<DiseaseDTO> list = diseaseDAO.search(filterMessage);
 
@@ -67,6 +71,14 @@ public class DoctorServiceImpl implements DoctorService {
         }
 
         return result;
+    }
+
+    // 처방(더미)테이블 search
+    @Override
+    public List<DiagnoseDTO> cbFilterSearch(String filterMessage) {
+        List<DiagnoseDTO> list = diagnoseDAO.search(filterMessage);
+
+        return list;
     }
 }
 

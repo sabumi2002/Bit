@@ -1,6 +1,7 @@
 package com.bit.bitcare.controller;
 
 import com.bit.bitcare.lucene.DiseaseIndexer;
+import com.bit.bitcare.model.DiagnoseDTO;
 import com.bit.bitcare.model.DiseaseDTO;
 import com.bit.bitcare.service.DoctorService;
 import com.bit.bitcare.serviceImpl.DoctorServiceImpl;
@@ -28,14 +29,14 @@ public class DoctorController {
     @ResponseBody
     @RequestMapping(value = "/sbModalFilter", method = RequestMethod.POST)
     public String sbModalFilter(@RequestBody Map<String, Object> requestData, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        JsonObject result = new JsonObject();
-
-
-        System.out.println(requestData.get("filterMessage"));
         String message = (String) requestData.get("filterMessage");
+        return doctorService.sbFilterSearch(message).toString();
+    }
 
-        System.out.println(doctorService.filterSearch(message));
-
-        return doctorService.filterSearch(message).toString();
+    @ResponseBody
+    @RequestMapping(value = "/cbModalFilter", method = RequestMethod.POST)
+    public List<DiagnoseDTO> cbModalFilter(@RequestBody Map<String, Object> requestData, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String message = (String) requestData.get("filterMessage");
+        return doctorService.cbFilterSearch(message);
     }
 }

@@ -5,6 +5,9 @@ module.exports = defineConfig({
 
 // vue 설정
 module.exports = {
+    //런타임컴파일러 없으면 개발자창에 컴파일에러 문구 계속 뜸
+    runtimeCompiler: true,
+
     //outputDir : npm run build로 빌드 시에 파일이 생성되는 위치
     outputDir: "../src/main/resources/static",
 
@@ -39,6 +42,26 @@ module.exports = {
 
             }
         }
-    }
+    },
+    // devServer: {
+    //     https: true
+    // },
+    // configureWebpack: {
+    //     module: {
+    //         rules: [
+    //             {
+    //                 test: /\.(png|jpe?g|gif)$/i,
+    //                 use: [
+    //                     {
+    //                         loader: 'file-loader',
+    //                         options: {
+    //                             name: 'assets/img/[name].[hash:8].[ext]'
+    //                         }
+    //                     }
+    //                 ]
+    //             }
+    //         ]
+    //     }
+    // }
 
 };
