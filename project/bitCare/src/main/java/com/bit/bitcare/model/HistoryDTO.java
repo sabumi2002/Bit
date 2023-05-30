@@ -16,7 +16,9 @@ public class HistoryDTO {
     int height;
     int weight;
     int temperature;
-    String symptom_detail;
+    String symptomDetail;
     Date entryDate;
     String visit;
+    String dept;
+    String name;
 }

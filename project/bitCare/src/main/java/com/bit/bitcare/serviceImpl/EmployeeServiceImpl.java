@@ -6,7 +6,6 @@ import com.bit.bitcare.model.EmployeeDTO;
 import com.bit.bitcare.service.EmployeeService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -41,6 +40,7 @@ import javax.crypto.spec.SecretKeySpec;
  * 2. auth : EmployeeDTO 객체로 UserDetails 객체를 생성하여 SpringSecurity 인증을 진행하고, session 에 로그인 정보를 저장하여 로그인 처리를 하는 메소드
  *           rememberMe 값이 true 라면 인증 토큰을 생성하여 persistentTokenRepository에 저장하고 cookie를 생성한다.
  * 3. getLogInInfo : session 에 저장되어있는 로그인 정보를 받아서 리턴하는 메소드
+ * 4. selectAll : 모든 직원의 정보를 List 객체로 만들어 json 형태로 리턴하는 메소드
  */
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -74,12 +74,28 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List<EmployeeDTO> selectAll() {
-        return employeeDAO.selectAll();
+    public ResponseEntity<String> selectAll() throws JsonProcessingException
+    {
+        Map<String, Object> data = new HashMap<>();
+        List<EmployeeDTO> employeeList = employeeDAO.selectAll();
+        for(EmployeeDTO i : employeeList){
+            i.setPassword("");
+        }
+        data.put("employeeList", employeeList);
+
+        // JSON 문자열 생성
+        String json = objectMapper.writeValueAsString(data);
+
+        // HTTP 응답 생성
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(json);
     }
 
     @Override
-    public void update(EmployeeDTO employeeDTO) {
+    public void update(int employeeId, String role) {
+        EmployeeDTO employeeDTO = employeeDAO.selectOne(employeeId);
+        employeeDTO.setRole(role);
         employeeDAO.update(employeeDTO);
     }
 
@@ -130,6 +146,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
             data.put("logIn", "success");
             data.put("role", logIn.getRole());
+            data.put("name", logIn.getName());
         }else{
             data.put("logIn", "failed");
         }
@@ -197,6 +214,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
             data.put("logIn", "success");
             data.put("role", logIn.getRole());
+            data.put("name", logIn.getName());
         } else {
             SecurityContextHolder.clearContext();
             data.put("logIn", "failed");
