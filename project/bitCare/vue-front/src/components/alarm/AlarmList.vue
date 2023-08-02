@@ -12,14 +12,14 @@
           </th>
         </tr>
         </thead>
-        <tbody v-if="alarmList != null">
-        <tr v-for="message in alarmList" :key="message.id">
+        <tbody v-if="this.$store.state.alarm.alarmList != null">
+        <tr v-for="message in this.$store.state.alarm.alarmList" :key="message.id">
           <td>
             <div>{{ message.sender }}</div>
             <div>{{ typeString(message.type) }}</div>
             <div>{{ formatDate(message.entryDate) }}</div>
             <div>
-              <button type="button" @click="showDetails(message.id)">
+              <button type="button" @click="showDetails(message)">
                 자세히 보기
               </button>
               <button type="button" class="btn btn-danger btn-sm" id="deleteButton" @click="deleteMessage(message.id)">
@@ -30,11 +30,11 @@
         </tr>
         </tbody>
         <tbody v-else>
-          <tr>
-            <td>
-              <span>새로운 알람이 없습니다!</span>
-            </td>
-          </tr>
+        <tr>
+          <td>
+            <span>새로운 알람이 없습니다!</span>
+          </td>
+        </tr>
         </tbody>
       </table>
     </div>
@@ -64,6 +64,7 @@ export default {
       selectedMessage: "",
       showDetailsModal: this.showModal,
       readMessage: "",
+      getMessage: "",
     }
   },
   name: "AlarmList",
@@ -78,7 +79,7 @@ export default {
   },
   computed: {
     ...mapState('alarm',
-        ['alarmList', 'alarmCount', 'messageList', 'messageCount', 'showModal', 'selectedMessage', 'messageModal']
+        ['alarmList', 'alarmCount', 'messageList', 'messageCount', 'showModal', 'selectedMessage', 'messageModal', 'catastrophe', 'selectedAnnouncement', 'showAnnouncementModal']
     ),
   },
   methods: {
@@ -89,7 +90,10 @@ export default {
       setCount: 'setCount',
       setModal: 'setModal',
       setMessageModal: 'setMessageModal',
-      setSelectedMessage: 'setSelectedMessage'
+      setSelectedMessage: 'setSelectedMessage',
+      setCatastrophe: 'setCatastrophe',
+      setSelectedAnnouncement: 'setSelectedAnnouncement',
+      setShowAnnouncementModal: 'setShowAnnouncementModal',
     }),
     formatDate(dateString) {
       const date = new Date(dateString);
@@ -101,10 +105,10 @@ export default {
       const seconds = String(date.getSeconds()).padStart(2, '0');
       return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
     },
-    typeString(type){
-      if(type === 'message'){
+    typeString(type) {
+      if (type === 'message') {
         return '쪽지'
-      } else{
+      } else {
         return '공지'
       }
     },
@@ -112,15 +116,10 @@ export default {
       // Axios를 사용하여 RESTful API 호출
       axios.get('/api/login')
           .then(response => {
-            console.log(response.data);
             // 세션 데이터 사용 예시
             if (response.data && response.data.isLoggedIn) {
               let logIn = JSON.parse(JSON.stringify(response.data.logIn));
-              console.log('현재 로그인된 사용자: ' + logIn.name);
               this.sender = logIn.name;
-              console.log(this.recvList)
-            } else {
-              console.log('로그인되어 있지 않습니다.');
             }
           })
           .catch(error => {
@@ -134,7 +133,6 @@ export default {
       }
     },
     send() {
-      console.log("Send message:" + this.message);
       if (this.stompClient && this.stompClient.connected) {
         if (this.sender != null) {
           this.type = "message";
@@ -152,7 +150,6 @@ export default {
         };
         this.stompClient.send("/app/receive/" + this.receiver, JSON.stringify(msg), {});
       }
-      console.log("메세지 전송 완료. 소켓 연결 해제")
       setTimeout(() => this.stompClient.disconnect(), 100)
       this.message = ''
     },
@@ -160,22 +157,19 @@ export default {
       const serverURL = "http://localhost:8080/receive"
       let socket = new SockJS(serverURL);
       this.stompClient = Stomp.over(socket);
-      console.log(`소켓 연결을 시도합니다. 서버 주소: ${serverURL}`)
       this.stompClient.connect({
             'client-id': this.sender
           },
           () => {
             // 소켓 연결 성공
             this.connected = true;
-            console.log('소켓 연결 성공');
             // 서버의 메시지 전송 endpoint를 구독합니다.
             // 이런형태를 pub sub 구조라고 합니다.
             this.stompClient.subscribe("/send/" + this.sender, res => {
-              console.log('구독으로 받은 메시지 입니다.', res.body)
               // 받은 데이터를 json으로 파싱하고 리스트에 넣어줍니다.
-              if(res.body==="cancel"){
+              if (res.body === "cancel") {
                 this.settingRecvList()
-              }else {
+              } else {
                 this.recvList.push(JSON.parse(res.body))
                 this.setAlarm(this.recvList)
                 this.setAlarmCount(this.count)
@@ -184,7 +178,7 @@ export default {
           },
           (error) => {
             // 소켓 연결 실패
-            console.log('소켓 연결 실패', error)
+            console.log(error)
             this.connected = false;
           }
       );
@@ -194,18 +188,13 @@ export default {
       // Axios를 사용하여 RESTful API 호출
       axios.get('/api/receiveList')
           .then(response => {
-            console.log(response.data);
             // 세션 데이터 사용 예시
             if (response.data && response.data.isLoggedIn) {
               this.isLogin = true
               let receiveList = JSON.parse(JSON.stringify(response.data.receiveList));
-              console.log(receiveList)
               this.recvList = receiveList
               this.setAlarm(this.recvList)
               this.alarmLength()
-              console.log(this.recvList)
-            } else {
-              console.log('로그인되어 있지 않습니다.');
             }
           })
           .catch(error => {
@@ -214,20 +203,15 @@ export default {
 
       axios.get('/api/receiveMessageList')
           .then(response => {
-            console.log(response.data);
             // 세션 데이터 사용 예시
             if (response.data && response.data.isLoggedIn) {
               this.isLogin = true
               let receiveList = JSON.parse(JSON.stringify(response.data.receiveList));
-              console.log(receiveList)
               this.setMessage(receiveList)
-              if(receiveList != null) {
+              if (receiveList != null) {
                 this.count = receiveList.filter(element => "new" === element.state).length
               }
               this.setCount(this.count)
-              console.log(receiveList)
-            } else {
-              console.log('로그인되어 있지 않습니다.');
             }
           })
           .catch(error => {
@@ -251,8 +235,8 @@ export default {
 
       setTimeout(() => this.settingRecvList(), 100)
     },
-    allDeleteMessage(){
-      axios.get('api/allDeleteAlarm',{
+    allDeleteMessage() {
+      axios.get('api/allDeleteAlarm', {
         params: {
           name: this.$store.state.login.name
         }
@@ -269,39 +253,87 @@ export default {
     alarmLength() {
       if (this.recvList != null) {
         this.count = this.recvList.filter(element => "new" === element.state).length
-      } else{
+      } else {
         this.count = 0
       }
       this.setAlarmCount(this.count)
     },
-    showDetails(messageId) {
-      axios.get('api/receiveMessage', {
-        params: {
-          id: messageId
-        }
-      }).then(response => {
-        if (response.status === 200 && response.data.receiveMessage != null) {
-          console.log(response.data.receiveMessage)
-          this.readMessage = response.data.receiveMessage
-          this.setSelectedMessage(this.readMessage)
-          this.showDetailsModal = true;
-          this.setModal(this.showDetailsModal);
-          this.setMessageModal(this.showDetailsModal);
-        } else {
-          alert('삭제된 메시지입니다.')
-          this.deleteMessage(messageId)
-        }
-      })
+    showDetails(message) {
+      if (message.type === 'message') {
+        axios.get('/api/getMessageByAlarmId', {
+          params: {
+            id: message.id,
+          }
+        }).then(response => {
+          if (response.status === 200 && response.data.receiveMessage != null) {
+            this.getMessage = response.data.receiveMessage
+          } else{
+            alert('삭제된 쪽지입니다.')
+            this.deleteMessage(message.id)
+          }
+        })
 
-      setTimeout(() => this.readOn(this.readMessage),100)
-      this.readMessage = "";
+        setTimeout(() => {
+          axios.get('api/receiveMessage', {
+            params: {
+              id: this.getMessage.id,
+            }
+          }).then(response => {
+            if (response.status === 200 && response.data.receiveMessage != null) {
+              this.readMessage = response.data.receiveMessage
+              this.setSelectedMessage(this.readMessage)
+              this.showDetailsModal = true;
+              this.setModal(this.showDetailsModal);
+              this.setMessageModal(this.showDetailsModal);
+            } else {
+              alert('삭제된 메시지입니다.')
+              this.deleteMessage(message.id)
+            }
+          })
+        }, 100)
+
+        setTimeout(() => this.readOn(this.readMessage), 100)
+        this.readMessage = "";
+      } else {
+        axios.get('/api/getMessageByAlarmId', {
+          params: {
+            id: message.id,
+          }
+        }).then(response => {
+          if (response.status === 200 && response.data.receiveMessage != null) {
+            this.getMessage = response.data.receiveMessage
+          } else{
+            alert('삭제된 공지입니다.')
+            this.deleteMessage(message.id)
+          }
+        })
+
+        setTimeout(() => {
+          axios.get('api/receiveMessage', {
+            params: {
+              id: this.getMessage.id,
+            }
+          }).then(response => {
+            if (response.status === 200 && response.data.receiveMessage != null) {
+              this.readMessage = response.data.receiveMessage
+              this.setSelectedAnnouncement(this.readMessage);
+              this.setShowAnnouncementModal(true);
+            } else {
+              alert('삭제된 공지입니다.')
+              this.deleteMessage(message.id)
+            }
+          })
+        }, 100)
+
+        setTimeout(() => this.readOn(this.readMessage), 100)
+        this.readMessage = "";
+      }
     },
     readOn(message) {
       this.connect()
-      setTimeout(() => this.read(message),100)
+      setTimeout(() => this.read(message), 100)
     },
-    read(message){
-      console.log("read message:" + message.id);
+    read(message) {
       if (this.stompClient && this.stompClient.connected) {
         const msg = {
           connectType: "read",
@@ -309,7 +341,6 @@ export default {
         };
         this.stompClient.send("/app/receive/" + message.sender, JSON.stringify(msg), {});
       }
-      console.log("전송 취소 요청 완료. 소켓 연결 해제")
       setTimeout(() => this.stompClient.disconnect(), 100)
       this.messageContent = ''
       setTimeout(() => this.settingRecvList(), 100)

@@ -1,9 +1,9 @@
 <template>
   <div class="temp">
-    <NavBar/>
+    <NavBarHome/>
     <!-- ======= Hero Section ======= -->
     <section id="hero" class="d-flex align-items-center">
-      <div class="container pt-0" data-aos="zoom-in" data-aos-delay="100">
+      <div class="pt-0" data-aos="zoom-in" data-aos-delay="100">
         <div class="page-box justify-content-center">
           <div class="logo-box d-flex align-items-center" data-aos="zoom-in"
                data-aos-delay="200">
@@ -17,12 +17,14 @@
             <!--            <h2>All in One EMR Cloud Platform</h2>-->
 
             <div class="login-info-box">
-              <b-input class="m-auto" v-model="username" name="username" placeholder="ID"></b-input>
-              <b-input class="m-auto" v-model="password" name="password" style="margin: 5px 0 !important;"
-                       type="password" placeholder="Password"></b-input>
-              <input type="checkbox" name="remember-me" v-model="rememberMe"/>
-              <label for="remember-me">자동 로그인</label>
-              <button @click="login" class="w-25 btn btn-primary" variant="success" type="submit">Login</button>
+              <form @submit.prevent="login()">
+                <b-input class="m-auto" v-model="username" name="username" placeholder="ID"></b-input>
+                <b-input class="m-auto" v-model="password" name="password" style="margin: 5px 0 !important;"
+                         type="password" placeholder="Password"></b-input>
+                <input type="checkbox" name="remember-me" v-model="rememberMe"/>
+                <label for="remember-me">자동 로그인</label>
+                <button class="w-25 btn btn-primary" variant="success" type="submit">Login</button>
+              </form>
             </div>
           </div>
 
@@ -35,14 +37,14 @@
 
 <script>
 import "/public/assets/css/style.scss";
-import NavBar from "@/components/mobile/NavBar.vue";
 import axios from "axios";
 import {mapMutations, mapState} from "vuex";
+import NavBarHome from "@/components/mobile/NavBarHome.vue";
 
 export default {
   name: "MobileLogin",
   components: {
-    NavBar,
+    NavBarHome,
   },
   data() {
     return {
@@ -54,9 +56,8 @@ export default {
       rememberMe: false
     }
   },
-  mounted() {
+  created() {
     this.autoLogin()
-    this.setRole('ROLE_ADMIN')
   },
   computed: {
     ...mapState('login',
@@ -85,22 +86,18 @@ export default {
     // },
     ...mapMutations('login', {
       setRole: 'setRole',
-      setName: 'setName'
+      setName: 'setName',
     }),
-    autoLogin(){
+    autoLogin() {
       axios.get('/api/login')
           .then(response => {
-            console.log(response.data)
             // 세션 데이터 사용 예시
             if (response.data && response.data.isLoggedIn) {
               let logIn = JSON.parse(JSON.stringify(response.data.logIn))
-              console.log('현재 로그인된 사용자: ' + logIn.name)
-              console.log(logIn.role)
               this.setName(logIn.name)
               this.setRole(logIn.role)
-              console.log(this.recvList)
               this.$router.push('/mobile/doctor')
-            } else{
+            } else {
               this.setName('admin')
               this.setRole('ROLE_ADMIN')
             }
@@ -116,8 +113,6 @@ export default {
             this.setRole(response.data.role)
             this.setName(response.data.name)
             this.$router.push('/mobile/doctor')
-          } else {
-            console.log(response.data)
           }
         }
       }).catch((err) => {
@@ -140,7 +135,12 @@ export default {
             this.setName(response.data.name)
             this.$router.push('/mobile/doctor')
           } else {
-            console.log(response.data)
+            window.Swal.fire({
+              icon: 'error',
+              title: 'error',
+              html: '로그인 실패<br>로그인 정보를 정확하게 입력해주세요.',
+              timer: 3000
+            })
           }
         }
       }).catch((err) => {

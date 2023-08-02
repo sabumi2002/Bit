@@ -1,222 +1,383 @@
 <template>
   <div>
     <!-- ======= Top Bar ======= -->
-    <div id="topbar" class="d-flex align-items-center fixed-top">
-      <div class="container d-flex justify-content-center justify-content-md-between">
-
-        <div class="contact-info d-flex align-items-center">
-          <i class="bi bi-phone d-flex align-items-center"><span>+82 2 123 4567</span></i>
-          <i class="bi bi-clock d-flex align-items-center ms-4"><span> Mon-Sat: 9AM - 6PM</span></i>
-        </div>
-
-        <div class="languages d-none d-md-flex align-items-center">
-          <ul>
-            <li>En</li>
-            <li><a href="#">De</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
+    <!--    <div id="topbar" class="d-flex align-items-center fixed-top">-->
+    <!--      <div class="container d-flex justify-content-center justify-content-md-between">-->
+    <!--      </div>-->
+    <!--    </div>-->
 
     <!-- ======= Header ======= -->
-    <header id="header" class="fixed-top d-flex align-items-cente">
-      <div class="container-fluid container-xl d-flex align-items-center justify-content-lg-between">
+    <header id="header" class="fixed-top d-flex align-items-center">
+      <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
 
-        <h1 class="logo me-auto me-lg-0"><router-link to="m.home" tag="a">BitCare Platform</router-link></h1>
+        <h1 class="logo me-auto me-lg-0">
+          <router-link to="/mobile/home" tag="a">BitCare</router-link>
+        </h1>
         <!-- Uncomment below if you prefer to use an image logo -->
         <!-- <a href="index.html" class="logo me-auto me-lg-0"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
 
-        <nav id="navbar" class="navbar order-last order-lg-0">
-          <ul>
-            <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
-            <li><a class="nav-link scrollto" href="#about">About</a></li>
-            <li><a class="nav-link scrollto" href="#menu">Menu</a></li>
-            <li><a class="nav-link scrollto" href="#specials">Specials</a></li>
-            <li><a class="nav-link scrollto" href="#events">Events</a></li>
-            <li><a class="nav-link scrollto" href="#chefs">Chefs</a></li>
-            <li><a class="nav-link scrollto" href="#gallery">Gallery</a></li>
-            <li class="dropdown"><a href="#"><span>Drop Down</span> <i class="bi bi-chevron-down"></i></a>
-              <ul>
-                <li><a href="#">Drop Down 1</a></li>
-                <li class="dropdown"><a href="#"><span>Deep Drop Down</span> <i class="bi bi-chevron-right"></i></a>
-                  <ul>
-                    <li><a href="#">Deep Drop Down 1</a></li>
-                    <li><a href="#">Deep Drop Down 2</a></li>
-                    <li><a href="#">Deep Drop Down 3</a></li>
-                    <li><a href="#">Deep Drop Down 4</a></li>
-                    <li><a href="#">Deep Drop Down 5</a></li>
-                  </ul>
-                </li>
-                <li><a href="#">Drop Down 2</a></li>
-                <li><a href="#">Drop Down 3</a></li>
-                <li><a href="#">Drop Down 4</a></li>
-              </ul>
-            </li>
-            <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
-          </ul>
-          <i class="bi bi-list mobile-nav-toggle"></i>
-        </nav><!-- .navbar -->
-        <a href="#book-a-table" class="book-a-table-btn scrollto d-none d-lg-flex">Book a table</a>
+        <div class="search-box d-flex justify-content-center">
+          <b-collapse id="collapseWidthExample">
+            <form class="search d-flex justify-content-end align-items-center" style="min-width: 80px;" @submit.prevent="search()">
+              <input class="form-control m-0" type="text" placeholder="Search" v-model="keyword">
+            </form>
+          </b-collapse>
+          <b-button v-b-toggle.collapseWidthExample id="searchButton">
+            <img src="/assets/img/main/search.png" style="width: 24px; height: 24px; min-width: 24px; min-height: 24px;">
+          </b-button>
+        </div>
+
+        <!--        <nav id="navbar" class="navbar order-last order-lg-0">-->
+        <!--          <i class="bi bi-list mobile-nav-toggle"></i>-->
+        <!--        </nav>&lt;!&ndash; .navbar &ndash;&gt;-->
+
+        <b-button type="button" class="nav-item nav-link" id="info" @click="goInfo()">
+          <div style="min-width: 84px">
+            <b-icon-person-fill style="width: 24px; height: 24px;" title="내 정보"></b-icon-person-fill>
+            {{ this.$store.state.login.name }}님
+          </div>
+        </b-button>
 
       </div>
     </header>
     <!-- End Header -->
-
   </div>
 </template>
 
 <script>
+import {mapMutations} from "vuex";
+
 export default {
   name: "NavBar",
+  data() {
+    return {
+      keyword: "",
+    }
+  },
   mounted() {
-    /**
-     * Easy selector helper function
-     */
-    const select = (el, all = false) => {
-      if (!el) {
-        return null;
-      }
-      el = el.trim()
-      if (all) {
-        return [...document.querySelectorAll(el)]
-      } else {
-        return document.querySelector(el)
-      }
+  },
+  methods: {
+    ...mapMutations('mobileDoctor', {
+      setNextStep: 'setNextStep',
+    }),
+    goInfo() {
+      this.setNextStep(6);
+    },
+    search() {
+      console.log("search");
+      console.log(this.keyword);
+      this.$router.push({path: "/mobile/search", query: {keyword: this.keyword}});
+      // window.location.reload(true);
+      this.$router.go();
     }
-
-    /**
-     * Easy event listener function
-     */
-    const on = (type, el, listener, all = false) => {
-      let selectEl = select(el, all)
-      if (selectEl) {
-        if (all) {
-          selectEl.forEach(e => e.addEventListener(type, listener))
-        } else {
-          selectEl.addEventListener(type, listener)
-        }
-      }
-    }
-
-    /**
-     * Easy on scroll event listener
-     */
-    const onscroll = (el, listener) => {
-      el.addEventListener('scroll', listener)
-    }
-    /**
-     * Navbar links active state on scroll
-     */
-    let navbarlinks = select('#navbar .scrollto', true)
-    const navbarlinksActive = () => {
-      let position = window.scrollY + 200
-      navbarlinks.forEach(navbarlink => {
-        if (!navbarlink.hash) return
-        let section = select(navbarlink.hash)
-        if (!section) return
-        if (position >= section.offsetTop && position <= (section.offsetTop + section.offsetHeight)) {
-          navbarlink.classList.add('active')
-        } else {
-          navbarlink.classList.remove('active')
-        }
-      })
-    }
-    window.addEventListener('load', navbarlinksActive)
-    onscroll(document, navbarlinksActive)
-
-    /**
-     * Scrolls to an element with header offset
-     */
-    const scrollto = (el) => {
-      let header = select('#header')
-      let offset = header.offsetHeight
-
-      let elementPos = select(el).offsetTop
-      window.scrollTo({
-        top: elementPos - offset,
-        behavior: 'smooth'
-      })
-    }
-
-    /**
-     * Toggle .header-scrolled class to #header when page is scrolled
-     */
-    let selectHeader = select('#header')
-    let selectTopbar = select('#topbar')
-    if (selectHeader) {
-      const headerScrolled = () => {
-        if (window.scrollY > 100) {
-          selectHeader.classList.add('header-scrolled')
-          if (selectTopbar) {
-            selectTopbar.classList.add('topbar-scrolled')
-          }
-        } else {
-          selectHeader.classList.remove('header-scrolled')
-          if (selectTopbar) {
-            selectTopbar.classList.remove('topbar-scrolled')
-          }
-        }
-      }
-      window.addEventListener('load', headerScrolled)
-      onscroll(document, headerScrolled)
-    }
-
-    /**
-     * Back to top button
-     */
-    let backtotop = select('.back-to-top')
-    if (backtotop) {
-      const toggleBacktotop = () => {
-        if (window.scrollY > 100) {
-          backtotop.classList.add('active')
-        } else {
-          backtotop.classList.remove('active')
-        }
-      }
-      window.addEventListener('load', toggleBacktotop)
-      onscroll(document, toggleBacktotop)
-    }
-
-    /**
-     * Mobile nav toggle
-     */
-    on('click', '.mobile-nav-toggle', function () {
-      select('#navbar').classList.toggle('navbar-mobile')
-      this.classList.toggle('bi-list')
-      this.classList.toggle('bi-x')
-    })
-
-    /**
-     * Mobile nav dropdowns activate
-     */
-    on('click', '.navbar .dropdown > a', function (e) {
-      if (select('#navbar').classList.contains('navbar-mobile')) {
-        e.preventDefault()
-        this.nextElementSibling.classList.toggle('dropdown-active')
-      }
-    }, true)
-
-    /**
-     * Scrool with ofset on links with a class name .scrollto
-     */
-    on('click', '.scrollto', function (e) {
-      if (select(this.hash)) {
-        e.preventDefault()
-
-        let navbar = select('#navbar')
-        if (navbar.classList.contains('navbar-mobile')) {
-          navbar.classList.remove('navbar-mobile')
-          let navbarToggle = select('.mobile-nav-toggle')
-          navbarToggle.classList.toggle('bi-list')
-          navbarToggle.classList.toggle('bi-x')
-        }
-        scrollto(this.hash)
-      }
-    }, true)
-  }
+  },
 }
 </script>
 
 <style scoped>
 
+/*--------------------------------------------------------------
+# Header
+--------------------------------------------------------------*/
+#header {
+  background: rgba(0, 0, 0, 0.85);
+  border-bottom: 1px solid rgba(12, 11, 9, 0.6);
+  /*transition: all 0.5s;*/
+  z-index: 997;
+  padding: 15px 0;
+  top: 0px;
+}
+
+#header .logo {
+  font-size: 28px;
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+  font-weight: 300;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-family: "Poppins", sans-serif;
+}
+
+#header .logo a {
+  color: #fff;
+}
+
+#header .logo img {
+  max-height: 40px;
+}
+
+/*--------------------------------------------------------------
+# Book a table button Menu
+--------------------------------------------------------------*/
+.book-a-table-btn {
+  margin: 0 0 0 15px;
+  border: 2px solid #cda45e;
+  color: #fff;
+  border-radius: 50px;
+  padding: 8px 25px;
+  text-transform: uppercase;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  transition: 0.3s;
+}
+
+.book-a-table-btn:hover {
+  background: #cda45e;
+  color: #fff;
+}
+
+@media (max-width: 992px) {
+  .book-a-table-btn {
+    margin: 0 15px 0 0;
+    padding: 8px 20px;
+  }
+}
+
+/*--------------------------------------------------------------
+# Navigation Menu
+--------------------------------------------------------------*/
+/**
+* Desktop Navigation
+*/
+.navbar {
+  padding: 0;
+}
+
+.navbar ul {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  list-style: none;
+  align-items: center;
+}
+
+.navbar li {
+  position: relative;
+}
+
+.navbar a,
+.navbar a:focus {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0 10px 30px;
+  color: #fff;
+  white-space: nowrap;
+  transition: 0.3s;
+  font-size: 14px;
+}
+
+.navbar a i,
+.navbar a:focus i {
+  font-size: 12px;
+  line-height: 0;
+  margin-left: 5px;
+}
+
+.navbar a:hover,
+.navbar .active,
+.navbar .active:focus,
+.navbar li:hover > a {
+  color: #d9ba85;
+}
+
+.navbar .dropdown ul {
+  display: block;
+  position: absolute;
+  left: 14px;
+  top: calc(100% + 30px);
+  margin: 0;
+  padding: 10px 0;
+  z-index: 99;
+  opacity: 0;
+  visibility: hidden;
+  background: #fff;
+  box-shadow: 0px 0px 30px rgba(127, 137, 161, 0.25);
+  transition: 0.3s;
+  border-radius: 4px;
+}
+
+.navbar .dropdown ul li {
+  min-width: 200px;
+}
+
+.navbar .dropdown ul a {
+  padding: 10px 20px;
+  color: #444444;
+}
+
+.navbar .dropdown ul a i {
+  font-size: 12px;
+}
+
+.navbar .dropdown ul a:hover,
+.navbar .dropdown ul .active:hover,
+.navbar .dropdown ul li:hover > a {
+  color: #cda45e;
+}
+
+.navbar .dropdown:hover > ul {
+  opacity: 1;
+  top: 100%;
+  visibility: visible;
+}
+
+.navbar .dropdown .dropdown ul {
+  top: 0;
+  left: calc(100% - 30px);
+  visibility: hidden;
+}
+
+.navbar .dropdown .dropdown:hover > ul {
+  opacity: 1;
+  top: 0;
+  left: 100%;
+  visibility: visible;
+}
+
+@media (max-width: 1366px) {
+  .navbar .dropdown .dropdown ul {
+    left: -90%;
+  }
+
+  .navbar .dropdown .dropdown:hover > ul {
+    left: -100%;
+  }
+}
+
+/**
+* Mobile Navigation
+*/
+.mobile-nav-toggle {
+  color: #fff;
+  font-size: 28px;
+  cursor: pointer;
+  display: none;
+  line-height: 0;
+  transition: 0.5s;
+}
+
+@media (max-width: 991px) {
+  .mobile-nav-toggle {
+    display: block;
+  }
+
+  .navbar ul {
+    display: none;
+  }
+}
+
+.navbar-mobile {
+  position: fixed;
+  overflow: hidden;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.9);
+  transition: 0.3s;
+  z-index: 999;
+}
+
+.navbar-mobile .mobile-nav-toggle {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+
+.navbar-mobile ul {
+  display: block;
+  position: absolute;
+  top: 55px;
+  right: 15px;
+  bottom: 15px;
+  left: 15px;
+  padding: 10px 0;
+  border-radius: 6px;
+  background-color: #fff;
+  overflow-y: auto;
+  transition: 0.3s;
+}
+
+.navbar-mobile a,
+.navbar-mobile a:focus {
+  padding: 10px 20px;
+  font-size: 15px;
+  color: #1a1814;
+}
+
+.navbar-mobile a:hover,
+.navbar-mobile .active,
+.navbar-mobile li:hover > a {
+  color: #cda45e;
+}
+
+.navbar-mobile .getstarted,
+.navbar-mobile .getstarted:focus {
+  margin: 15px;
+}
+
+.navbar-mobile .dropdown ul {
+  position: static;
+  display: none;
+  margin: 10px 20px;
+  padding: 10px 0;
+  z-index: 99;
+  opacity: 1;
+  visibility: visible;
+  background: #fff;
+  box-shadow: 0px 0px 30px rgba(127, 137, 161, 0.25);
+}
+
+.navbar-mobile .dropdown ul li {
+  min-width: 200px;
+}
+
+.navbar-mobile .dropdown ul a {
+  padding: 10px 20px;
+}
+
+.navbar-mobile .dropdown ul a i {
+  font-size: 12px;
+}
+
+.navbar-mobile .dropdown ul a:hover,
+.navbar-mobile .dropdown ul .active:hover,
+.navbar-mobile .dropdown ul li:hover > a {
+  color: #cda45e;
+}
+
+.navbar-mobile .dropdown > .dropdown-active {
+  display: block;
+}
+
+@media (min-width: 581px) {
+  /*class="fixed-top d-flex justify-content-center"*/
+  .search-box {
+    position: relative;
+  }
+}
+
+@media (max-width: 580px) {
+  .search {
+    top: 59px;
+  }
+}
+
+#info, #searchButton {
+  background-color: var(--background-color);
+  border: none;
+  outline: none;
+  box-shadow: none;
+}
+
+#header {
+  max-height: 59px;
+}
+
+#collapse {
+  top: 69px;
+}
 </style>

@@ -17,7 +17,14 @@ export default {
         sendList: [],
         alarmCount: 0,
         alarmList: [],
-        selectedMessage: {}
+        announcementList: [],
+        selectedMessage: {},
+        selectedAnnouncement: {},
+        announcementModal: false,
+        catastrophe: false,
+        showAnnouncementModal: false,
+        responseReceiver: '',
+        messageTab: 0,
     },
     getters: {
         getCount(state){
@@ -51,7 +58,28 @@ export default {
         },
         setSelectedMessage : function (state, selectedMessage) {
             return state.selectedMessage = selectedMessage;
-        }
+        },
+        setAnnouncementList : function (state, announcementList) {
+            return state.announcementList = announcementList;
+        },
+        setSelectedAnnouncement : function (state, selectedAnnouncement) {
+            return state.selectedAnnouncement = selectedAnnouncement;
+        },
+        setAnnouncementModal : function (state, announcementModal) {
+            return state.announcementModal = announcementModal;
+        },
+        setCatastrophe : function (state, catastrophe) {
+            return state.catastrophe = catastrophe;
+        },
+        setShowAnnouncementModal : function(state, showAnnouncementModal) {
+            return state.showAnnouncementModal = showAnnouncementModal;
+        },
+        setResponseReceiver : function(state, responseReceiver){
+            return state.responseReceiver = responseReceiver
+        },
+        setMessageTab : function(state, messageTab){
+            return state.messageTab = messageTab
+        },
     },
     actions: {
 

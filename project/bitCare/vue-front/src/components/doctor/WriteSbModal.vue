@@ -176,8 +176,7 @@ export default {
       this.removeSbList(item);
     },
     addCheck(item) {
-      let isCheck = this.sbList.some(obj => obj.id == item.id);
-      console.log(isCheck);
+      let isCheck = this.sbList.some(obj => obj.name === item.name);
       return isCheck;
     },
 

@@ -1,320 +1,71 @@
 <template>
   <!-- ======= Hero Section ======= -->
   <section id="mobile-doctor">
-    <div id="mobileDoctor-box" class="container text-center text-lg-start" data-aos="fade-up">
+    <div id="mobileDoctor-box" class="text-center text-lg-start" data-aos="fade-up">
       <div class="util" data-aos="fade-up">
         <div class="title">
-          <span class="font-weight-bold">박은희</span>
-          <span>cn.6</span>
-          <span>1951.09.04</span>
-          <span>70세</span>
-          <span>여</span>
+          <span class="font-weight-bold">{{ this.waitingData.name }}</span>
+          <span>cn.{{ this.waitingData.patientId }}</span>
+          <span>{{ dateMsg(this.waitingData.birth) }}</span>
+          <span>{{ ageMsg(this.waitingData.birth) }}세</span>
+          <span>{{ this.waitingData.gender }}</span>
         </div>
       </div>
 
-      <div class="patient-box border-box" data-aos="fade-up" data-aos-delay="200">
-        <div class="title ellipsis-name">
-          <span class="font-weight-bold">2022.01.06</span>
-          <span>초진</span>
-          <span>내과</span>
-          <span>백지영</span>
-        </div>
-        <div class="patient-info">
-          <div class="ellipsis-name">
-            <span>증상: </span><span>이틀전부터 목 불편함. 목이 칼칼하다. 헛기침 dsadsa ds asd sadsa sa dsa </span>
+      <div class="patient-box border-box" data-aos="fade-up" data-aos-delay="200" v-for="(item) in historyList"
+           :key="item.id">
+        <div @click="selectHistoryBtn(item)">
+          <div class=" title ellipsis-name">
+            <span class="font-weight-bold">{{ dateMsg(item.entryDate) }}</span>
+            <span>{{ item.visit }}</span>
+            <span>{{ item.dept }}</span>
+            <span>{{ item.name }}</span>
           </div>
-          <div class="ellipsis-name">
-            <span>주상병: </span><span>콜레라</span>
-          </div>
-        </div>
-      </div>
-      <div class="patient-box border-box" data-aos="fade-up" data-aos-delay="200">
-        <div class="title ellipsis-name">
-          <span class="font-weight-bold">2022.01.06</span>
-          <span>초진</span>
-          <span>내과</span>
-          <span>백지영</span>
-        </div>
-        <div class="patient-info">
-          <div class="ellipsis-name">
-            <span>증상: </span><span>이틀전부터 목 불편함. 목이 칼칼하다. 헛기침 dsadsa ds asd sadsa sa dsa </span>
-          </div>
-          <div class="ellipsis-name">
-            <span>주상병: </span><span>콜레라</span>
+          <div class="patient-info">
+            <div class="d-flex ellipsis-name" style="height: 20px;">
+              <div>
+                <span>증상: </span>
+              </div>
+              <div class="ellipsis-name" v-html="item.symptomDetail"></div>
+            </div>
+            <div class="ellipsis-name">
+              <span>주상병: </span><span>{{ item.diseaseName }}</span>
+            </div>
           </div>
         </div>
       </div>
-      <div class="patient-box border-box" data-aos="fade-up" data-aos-delay="200">
-        <div class="title ellipsis-name">
-          <span class="font-weight-bold">2022.01.06</span>
-          <span>초진</span>
-          <span>내과</span>
-          <span>백지영</span>
-        </div>
-        <div class="patient-info">
-          <div class="ellipsis-name">
-            <span>증상: </span><span>이틀전부터 목 불편함. 목이 칼칼하다. 헛기침 dsadsa ds asd sadsa sa dsa </span>
-          </div>
-          <div class="ellipsis-name">
-            <span>주상병: </span><span>콜레라</span>
-          </div>
-        </div>
-      </div>
-      <div class="patient-box border-box" data-aos="fade-up" data-aos-delay="200">
-        <div class="title ellipsis-name">
-          <span class="font-weight-bold">2022.01.06</span>
-          <span>초진</span>
-          <span>내과</span>
-          <span>백지영</span>
-        </div>
-        <div class="patient-info">
-          <div class="ellipsis-name">
-            <span>증상: </span><span>이틀전부터 목 불편함. 목이 칼칼하다. 헛기침 dsadsa ds asd sadsa sa dsa </span>
-          </div>
-          <div class="ellipsis-name">
-            <span>주상병: </span><span>콜레라</span>
-          </div>
-        </div>
-      </div>
-      <div class="patient-box border-box" data-aos="fade-up" data-aos-delay="200">
-        <div class="title ellipsis-name">
-          <span class="font-weight-bold">2022.01.06</span>
-          <span>초진</span>
-          <span>내과</span>
-          <span>백지영</span>
-        </div>
-        <div class="patient-info">
-          <div class="ellipsis-name">
-            <span>증상: </span><span>이틀전부터 목 불편함. 목이 칼칼하다. 헛기침 dsadsa ds asd sadsa sa dsa </span>
-          </div>
-          <div class="ellipsis-name">
-            <span>주상병: </span><span>콜레라</span>
-          </div>
-        </div>
-      </div>
-      <div class="patient-box border-box" data-aos="fade-up" data-aos-delay="200">
-        <div class="title ellipsis-name">
-          <span class="font-weight-bold">2022.01.06</span>
-          <span>초진</span>
-          <span>내과</span>
-          <span>백지영</span>
-        </div>
-        <div class="patient-info">
-          <div class="ellipsis-name">
-            <span>증상: </span><span>이틀전부터 목 불편함. 목이 칼칼하다. 헛기침 dsadsa ds asd sadsa sa dsa </span>
-          </div>
-          <div class="ellipsis-name">
-            <span>주상병: </span><span>콜레라</span>
-          </div>
-        </div>
-      </div>
-      <div class="patient-box border-box" data-aos="fade-up" data-aos-delay="200">
-        <div class="title ellipsis-name">
-          <span class="font-weight-bold">2022.01.06</span>
-          <span>초진</span>
-          <span>내과</span>
-          <span>백지영</span>
-        </div>
-        <div class="patient-info">
-          <div class="ellipsis-name">
-            <span>증상: </span><span>이틀전부터 목 불편함. 목이 칼칼하다. 헛기침 dsadsa ds asd sadsa sa dsa </span>
-          </div>
-          <div class="ellipsis-name">
-            <span>주상병: </span><span>콜레라</span>
-          </div>
-        </div>
-      </div>
-      <div class="patient-box border-box" data-aos="fade-up" data-aos-delay="200">
-        <div class="title ellipsis-name">
-          <span class="font-weight-bold">2022.01.06</span>
-          <span>초진</span>
-          <span>내과</span>
-          <span>백지영</span>
-        </div>
-        <div class="patient-info">
-          <div class="ellipsis-name">
-            <span>증상: </span><span>이틀전부터 목 불편함. 목이 칼칼하다. 헛기침 dsadsa ds asd sadsa sa dsa </span>
-          </div>
-          <div class="ellipsis-name">
-            <span>주상병: </span><span>콜레라</span>
-          </div>
-        </div>
-      </div>
-      <div class="patient-box border-box" data-aos="fade-up" data-aos-delay="200">
-        <div class="title ellipsis-name">
-          <span class="font-weight-bold">2022.01.06</span>
-          <span>초진</span>
-          <span>내과</span>
-          <span>백지영</span>
-        </div>
-        <div class="patient-info">
-          <div class="ellipsis-name">
-            <span>증상: </span><span>이틀전부터 목 불편함. 목이 칼칼하다. 헛기침 dsadsa ds asd sadsa sa dsa </span>
-          </div>
-          <div class="ellipsis-name">
-            <span>주상병: </span><span>콜레라</span>
-          </div>
-        </div>
-      </div>
-      <div class="patient-box border-box" data-aos="fade-up" data-aos-delay="200">
-        <div class="title ellipsis-name">
-          <span class="font-weight-bold">2022.01.06</span>
-          <span>초진</span>
-          <span>내과</span>
-          <span>백지영</span>
-        </div>
-        <div class="patient-info">
-          <div class="ellipsis-name">
-            <span>증상: </span><span>이틀전부터 목 불편함. 목이 칼칼하다. 헛기침 dsadsa ds asd sadsa sa dsa </span>
-          </div>
-          <div class="ellipsis-name">
-            <span>주상병: </span><span>콜레라</span>
-          </div>
-        </div>
-      </div>
-      <div class="patient-box border-box" data-aos="fade-up" data-aos-delay="200">
-        <div class="title ellipsis-name">
-          <span class="font-weight-bold">2022.01.06</span>
-          <span>초진</span>
-          <span>내과</span>
-          <span>백지영</span>
-        </div>
-        <div class="patient-info">
-          <div class="ellipsis-name">
-            <span>증상: </span><span>이틀전부터 목 불편함. 목이 칼칼하다. 헛기침 dsadsa ds asd sadsa sa dsa </span>
-          </div>
-          <div class="ellipsis-name">
-            <span>주상병: </span><span>콜레라</span>
-          </div>
-        </div>
-      </div>
-      <div class="patient-box border-box" data-aos="fade-up" data-aos-delay="200">
-        <div class="title ellipsis-name">
-          <span class="font-weight-bold">2022.01.06</span>
-          <span>초진</span>
-          <span>내과</span>
-          <span>백지영</span>
-        </div>
-        <div class="patient-info">
-          <div class="ellipsis-name">
-            <span>증상: </span><span>이틀전부터 목 불편함. 목이 칼칼하다. 헛기침 dsadsa ds asd sadsa sa dsa </span>
-          </div>
-          <div class="ellipsis-name">
-            <span>주상병: </span><span>콜레라</span>
-          </div>
-        </div>
-      </div>
-      <div class="patient-box border-box" data-aos="fade-up" data-aos-delay="200">
-        <div class="title ellipsis-name">
-          <span class="font-weight-bold">2022.01.06</span>
-          <span>초진</span>
-          <span>내과</span>
-          <span>백지영</span>
-        </div>
-        <div class="patient-info">
-          <div class="ellipsis-name">
-            <span>증상: </span><span>이틀전부터 목 불편함. 목이 칼칼하다. 헛기침 dsadsa ds asd sadsa sa dsa </span>
-          </div>
-          <div class="ellipsis-name">
-            <span>주상병: </span><span>콜레라</span>
-          </div>
-        </div>
-      </div>
-      <div class="patient-box border-box" data-aos="fade-up" data-aos-delay="200">
-        <div class="title ellipsis-name">
-          <span class="font-weight-bold">2022.01.06</span>
-          <span>초진</span>
-          <span>내과</span>
-          <span>백지영</span>
-        </div>
-        <div class="patient-info">
-          <div class="ellipsis-name">
-            <span>증상: </span><span>이틀전부터 목 불편함. 목이 칼칼하다. 헛기침 dsadsa ds asd sadsa sa dsa </span>
-          </div>
-          <div class="ellipsis-name">
-            <span>주상병: </span><span>콜레라</span>
-          </div>
-        </div>
-      </div>
-      <div class="patient-box border-box" data-aos="fade-up" data-aos-delay="200">
-        <div class="title ellipsis-name">
-          <span class="font-weight-bold">2022.01.06</span>
-          <span>초진</span>
-          <span>내과</span>
-          <span>백지영</span>
-        </div>
-        <div class="patient-info">
-          <div class="ellipsis-name">
-            <span>증상: </span><span>이틀전부터 목 불편함. 목이 칼칼하다. 헛기침 dsadsa ds asd sadsa sa dsa </span>
-          </div>
-          <div class="ellipsis-name">
-            <span>주상병: </span><span>콜레라</span>
-          </div>
-        </div>
-      </div>
-      <div class="patient-box border-box" data-aos="fade-up" data-aos-delay="200">
-        <div class="title ellipsis-name">
-          <span class="font-weight-bold">2022.01.06</span>
-          <span>초진</span>
-          <span>내과</span>
-          <span>백지영</span>
-        </div>
-        <div class="patient-info">
-          <div class="ellipsis-name">
-            <span>증상: </span><span>이틀전부터 목 불편함. 목이 칼칼하다. 헛기침 dsadsa ds asd sadsa sa dsa </span>
-          </div>
-          <div class="ellipsis-name">
-            <span>주상병: </span><span>콜레라</span>
-          </div>
-        </div>
-      </div>
-      <div class="patient-box border-box" data-aos="fade-up" data-aos-delay="200">
-        <div class="title ellipsis-name">
-          <span class="font-weight-bold">2022.01.06</span>
-          <span>초진</span>
-          <span>내과</span>
-          <span>백지영</span>
-        </div>
-        <div class="patient-info">
-          <div class="ellipsis-name">
-            <span>증상: </span><span>이틀전부터 목 불편함. 목이 칼칼하다. 헛기침 dsadsa ds asd sadsa sa dsa </span>
-          </div>
-          <div class="ellipsis-name">
-            <span>주상병: </span><span>콜레라</span>
-          </div>
-        </div>
-      </div>
-      <div class="patient-box border-box" data-aos="fade-up" data-aos-delay="200">
-        <div class="title ellipsis-name">
-          <span class="font-weight-bold">2022.01.06</span>
-          <span>초진</span>
-          <span>내과</span>
-          <span>백지영</span>
-        </div>
-        <div class="patient-info">
-          <div class="ellipsis-name">
-            <span>증상: </span><span>이틀전부터 목 불편함. 목이 칼칼하다. 헛기침 dsadsa ds asd sadsa sa dsa </span>
-          </div>
-          <div class="ellipsis-name">
-            <span>주상병: </span><span>콜레라</span>
-          </div>
-        </div>
-      </div>
-
-
     </div>
   </section><!-- End Hero -->
 
 </template>
 
 <script>
+import {mapMutations, mapState} from "vuex";
+import axios from "axios";
+
 export default {
   name: "MobileHome",
 
   mounted() {
     this.divHeightFix();
   },
+  computed: {
+    ...mapState('mobileDoctor',
+        ['historyList', 'waitingData']
+    ),
+  },
   methods: {
+    ...mapMutations('mobileDoctor', {
+      setNextStep: 'setNextStep',
+      setHistoryData: 'setHistoryData',
+      setSbList: 'setSbList',
+      setCbList: 'setCbList',
+      setImgList: 'setImgList',
+      setPhysicalData: 'setPhysicalData',
+      initNewCameraList: 'initNewCameraList',
+      initSavePhotoList: 'initSavePhotoList',
+
+    }),
     divHeightFix() {
       let div = document.getElementById('mobileDoctor-box');
       let divHeight = div.offsetHeight;
@@ -326,13 +77,74 @@ export default {
         div.style.height = 'auto';
       }
     },
-    registerBtn() {
-      this.$store.commit('mobile/initState');
-      this.$router.push('/mobile/register');
+    dateMsg(item) {
+      let dateTemp = new Date(item)
+      let year = dateTemp.getFullYear();
+      let month = dateTemp.getMonth() + 1;
+      if (month < 10) {
+        month = "0" + month;
+      }
+      let date = dateTemp.getDate();
+
+      return year + "." + month + "." + date;
     },
-    doctorBtn() {
-      this.$router.push('/mobile/doctor')
-    }
+    ageMsg(item) {
+      let dateTemp = new Date(item)
+      let dateNow = new Date();
+
+      let tempYear = dateTemp.getFullYear();
+      let nowYear = dateNow.getFullYear();
+      let age = parseInt(nowYear) - parseInt(tempYear) + 1;
+      return age;
+    },
+
+    setHistoryLogic(item, diseaseList, diagnoseList, imgList){
+      // 상병리스트
+      let sbItems = [];
+      diseaseList.forEach((i)=>{
+        sbItems.push({main: i.degree, code: i.code, name: i.name});
+      })
+      // 처방리스트
+      let cbItems = [];
+      diagnoseList.forEach((i) => {
+        cbItems.push({code: i.code, name: i.name, dose: i.dose, time: i.time, days: i.days});
+      })
+      // 이미지리스트
+      let imgItems = imgList;
+      let pyItems = [];
+      pyItems.push({
+        height: item.height,
+        weight: item.weight,
+        bpSystolic: item.bpSystolic,
+        bpDiastolic: item.bpDiastolic,
+        temperature: item.temperature
+      });
+
+      // vuex에 저장
+      this.setHistoryData(item);
+      this.setSbList(sbItems);
+      this.setCbList(cbItems);
+      this.setImgList(imgItems);
+      this.setPhysicalData(pyItems);
+    },
+
+    // 진료기록리스트에서 특정 진료기록 선택
+    selectHistoryBtn(item) {
+      axios.post('/doctor/getHistoryAddData', {
+        historyId: item.id,
+      }).then(response => {
+        let diseaseList = JSON.parse(response.data.diseaseList);
+        let diagnoseList = JSON.parse(response.data.diagnoseList);
+        let imgList = JSON.parse(response.data.imgList);
+        this.setHistoryLogic(item, diseaseList, diagnoseList, imgList);
+        this.initNewCameraList(); // 이전 진료내역에서 촬영했던 사진들 리셋
+        this.initSavePhotoList(); // 이전 진료내역에서 임시저장했던 사진들 리셋
+        this.setNextStep(4);  // 환자기록 페이지로 넘어감
+      }).catch(function (error) {
+        console.log(error);
+      });
+    },
+
   },
 }
 </script>
@@ -341,7 +153,8 @@ export default {
 #mobile-doctor {
   width: 100%;
   /*height: 100vh;*/
-  background: url("/public/assets/img/main/hero-bg.jpg");
+  /*background: url("/public/assets/img/main/hero-bg.jpg");*/
+  background-color: #A1C7E0;
   background-size: cover;
   /* 배경이미지 반복여부 */
   background-repeat: no-repeat;
@@ -355,7 +168,7 @@ export default {
 
 #mobile-doctor:before {
   content: "";
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.6);
   position: absolute;
   bottom: 0;
   top: 0;
@@ -364,8 +177,9 @@ export default {
 }
 
 #mobileDoctor-box {
-  padding-top: 150px;
+  padding-top: 60px;
   padding-bottom: 65px;
+  margin : 0 3px;
 }
 
 #mobileDoctor-box .util {
@@ -418,16 +232,8 @@ export default {
 }
 
 
-@media (max-width: 992px) {
-  #mobileDoctor-box {
-    padding-top: 110px;
-  }
-}
-
-@media (max-width: 335px) {
-  #mobileDoctor-box {
-    padding-top: 140px;
-  }
+p {
+  margin: 0 !important;
 }
 
 </style>

@@ -11,6 +11,7 @@
           <div class="btns">
             <a @click="registerBtn" class="btn-menu animated fadeInUp scrollto">접수하기</a>
             <a @click="doctorBtn" class="btn-book animated fadeInUp scrollto">관 계 자</a>
+            <a @click="paymentBtn" class="btn-book animated fadeInUp scrollto">결제하기</a>
           </div>
         </div>
         <div class="col-lg-4 d-flex align-items-center justify-content-center position-relative" data-aos="zoom-in"
@@ -30,15 +31,26 @@ export default {
   methods: {
     registerBtn() {
       this.$store.commit('mobile/initState');
-      this.$router.push('m.register');
+      this.$router.push('/mobile/register');
     },
     doctorBtn() {
-      this.$router.push('m.doctor')
-    }
+      this.$router.push('/mobile/login')
+    },
+    paymentBtn() {
+      this.$router.push('/mobile/payment')
+    },
   },
 }
 </script>
 
 <style scoped>
-
+#hero .play-btn {
+  width: 94px;
+  height: 94px;
+  background: none;
+  border-radius: 50%;
+  display: block;
+  position: relative;
+  overflow: hidden;
+}
 </style>

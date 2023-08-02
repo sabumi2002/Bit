@@ -113,31 +113,6 @@ export default {
                 console.log(error);
             })
         },
-        insertRegister({state}) {
-            console.log("phoneNumber: "+state.phoneNumber);
-            console.log("identityNumber: "+state.identityNumber);
-            console.log("name: "+state.name);
-            console.log("postcode: "+state.postcode);
-            console.log("roadAddress: "+state.roadAddress);
-            console.log("streetAddress: "+state.streetAddress);
-            console.log("extraAddress: "+state.extraAddress);
-            console.log("deptId: "+state.deptId);
-            console.log("symptom: "+state.symptom);
-            return axios.post('/mobile/insertRegister', {
-                phoneNumber: state.phoneNumber,
-                identityNumber: state.identityNumber,
-                name: state.name,
-                postcode: state.postcode,
-                roadAddress: state.roadAddress,
-                streetAddress: state.streetAddress,
-                extraAddress: state.extraAddress,
-                deptId: state.deptId.toString(),
-                symptom: state.symptom,
-            }).then(() => {
 
-            }).catch(function (error) {
-                console.log(error);
-            })
-        }
     }, getters: {}
 }

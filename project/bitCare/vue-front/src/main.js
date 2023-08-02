@@ -10,8 +10,9 @@
 // }).$mount('#app')
 
 
-
-
+Vue.config.devtools = true
+// EventBus 생성
+Vue.prototype.$EventBus = new Vue();
 
 import Vue from 'vue'
 import App from './App'
@@ -30,6 +31,12 @@ Vue.prototype.$axios = axios // axios를 import 해온 뒤, 전역변수로 선�
 // 이미지로딩
 // import loadImage from './plugins/loadImage'
 // Vue.use(loadImage)
+
+// swiper
+// import { Swiper, SwiperSlide } from "vue-awesome-swiper";
+import VueAwesomeSwiper from 'vue-awesome-swiper'
+import "swiper/css/swiper.css";
+Vue.use(VueAwesomeSwiper);
 
 
 
@@ -53,3 +60,26 @@ new Vue({
   router,
   components: { App }
 }).$mount('#app')
+
+router.beforeEach((to, from, next) => {
+  let roleStatus = store.state.login.role // 권한 상태
+  let roleName;
+  if (!to.meta.roles.includes(roleStatus)) {
+    if(roleStatus === 'ROLE_DOCTOR'){
+      roleName = '의사'
+    } else if(roleStatus === 'ROLE_NURSE'){
+      roleName = '간호사'
+    }
+
+    window.Swal.fire({
+      icon: 'error',
+      title: 'error',
+      html: '해당 페이지에 접근 권한이 없습니다.<br>접근권한을 가진 계정으로 로그인 하십시오.<br>현재 로그인한 계정의 권한 : '+roleName,
+      timer: 3000
+    })
+
+    next(from)
+  } else {
+    next()
+  }
+})

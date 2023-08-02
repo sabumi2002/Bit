@@ -30,11 +30,11 @@
       </table>
     </div>
     <div>
-      <b-modal v-model="this.$store.state.alarm.messageModal" size="lg" title="쪽지 내용" @hidden="closeModal">
+      <b-modal v-model="this.$store.state.alarm.messageModal" size="lg" hide-footer title="쪽지 내용" @hidden="closeModal">
         <div>
           <h2>
             {{ this.$store.state.alarm.selectedMessage.sender }}
-            <button type="button" class="btn btn-primary btn-sm">
+            <button type="button" class="btn btn-primary btn-sm" @click="responseMessage">
               답장
             </button>
           </h2>
@@ -64,7 +64,6 @@ export default {
       message_file: "",
       entryDate: "",
       type: "",
-      selectedMessage: "",
       showDetailsModal: false,
       fields: [
         {key: 'sender', label: '보낸 사람'},
@@ -87,7 +86,7 @@ export default {
   },
   computed: {
     ...mapState('alarm',
-        ['messageList', 'messageCount', 'messageModal', 'selectedMessage']
+        ['messageList', 'messageCount', 'messageModal', 'selectedMessage', 'responseReceiver', 'messageTab']
     ),
   },
   methods: {
@@ -95,7 +94,9 @@ export default {
       setMessage: 'setMessage',
       setCount: 'setCount',
       setMessageModal: 'setMessageModal',
-      setSelectedMessage: 'setSelectedMessage'
+      setSelectedMessage: 'setSelectedMessage',
+      setResponseReceiver: 'setResponseReceiver',
+      setMessageTab: 'setMessageTab',
     }),
     formatDate(dateString) {
       const date = new Date(dateString);
@@ -118,15 +119,10 @@ export default {
       // Axios를 사용하여 RESTful API 호출
       axios.get('/api/login')
           .then(response => {
-            console.log(response.data);
             // 세션 데이터 사용 예시
             if (response.data && response.data.isLoggedIn) {
               let logIn = JSON.parse(JSON.stringify(response.data.logIn));
-              console.log('현재 로그인된 사용자: ' + logIn.name);
               this.sender = logIn.name;
-              console.log(this.recvList)
-            } else {
-              console.log('로그인되어 있지 않습니다.');
             }
           })
           .catch(error => {
@@ -140,7 +136,6 @@ export default {
       }
     },
     send() {
-      console.log("Send message:" + this.message);
       if (this.stompClient && this.stompClient.connected) {
         if (this.sender != null) {
           this.type = "message";
@@ -158,26 +153,22 @@ export default {
         };
         this.stompClient.send("/app/receive/" + this.receiver, JSON.stringify(msg), {});
       }
-      console.log("메세지 전송 완료. 소켓 연결 해제")
       setTimeout(() => this.stompClient.disconnect(), 100)
       this.message = ''
     },
     connect() {
-      const serverURL = "http://localhost:8080/receive"
+      const serverURL = "/receive"
       let socket = new SockJS(serverURL);
       this.stompClient = Stomp.over(socket);
-      console.log(`소켓 연결을 시도합니다. 서버 주소: ${serverURL}`)
       this.stompClient.connect({
             'client-id': this.sender
           },
           () => {
             // 소켓 연결 성공
             this.connected = true;
-            console.log('소켓 연결 성공');
             // 서버의 메시지 전송 endpoint를 구독합니다.
             // 이런형태를 pub sub 구조라고 합니다.
             this.stompClient.subscribe("/send/" + this.sender, res => {
-              console.log('구독으로 받은 메시지 입니다.', res.body)
               // 받은 데이터를 json으로 파싱하고 리스트에 넣어줍니다.
               this.recvList = this.messageList
               this.recvList.push(JSON.parse(res.body))
@@ -197,18 +188,13 @@ export default {
       // Axios를 사용하여 RESTful API 호출
       axios.get('/api/receiveMessageList')
           .then(response => {
-            console.log(response.data);
             // 세션 데이터 사용 예시
             if (response.data && response.data.isLoggedIn) {
               this.isLogin = true
               let receiveList = JSON.parse(JSON.stringify(response.data.receiveList));
-              console.log(receiveList)
               this.recvList = receiveList
               this.setMessage(this.recvList)
               this.alarmLength()
-              console.log(this.recvList)
-            } else {
-              console.log('로그인되어 있지 않습니다.');
             }
           })
           .catch(error => {
@@ -218,7 +204,7 @@ export default {
     deleteMessage(message) {
       // API를 호출해서 해당 메시지를 삭제합니다.
       // 성공적으로 삭제되면 this.settingRecvList()를 호출합니다.
-      axios.get('api/deleteReceiveMessage', {
+      axios.get('/api/deleteReceiveMessage', {
         params: {
           id: message.id
         }
@@ -248,8 +234,6 @@ export default {
         if (response.status === 200) {
           this.readMessage = response.data.receiveMessage
           this.setSelectedMessage(this.readMessage)
-        } else {
-          console.log('메시지 불러오기 실패')
         }
       })
       this.setMessageModal(this.showDetailsModal);
@@ -261,7 +245,6 @@ export default {
       setTimeout(() => this.read(message), 100)
     },
     read(message) {
-      console.log("read message:" + message.id);
       if (this.stompClient && this.stompClient.connected) {
         const msg = {
           connectType: "read",
@@ -269,7 +252,6 @@ export default {
         };
         this.stompClient.send("/app/receive/" + message.sender, JSON.stringify(msg), {});
       }
-      console.log("전송 취소 요청 완료. 소켓 연결 해제")
       setTimeout(() => this.stompClient.disconnect(), 100)
       this.messageContent = ''
       setTimeout(() => this.settingRecvList(), 100)
@@ -277,7 +259,14 @@ export default {
     closeModal() {
       this.showDetailsModal = false;
       this.setMessageModal(this.showDetailsModal);
-    }
+    },
+    responseMessage(){
+      let sender = this.selectedMessage.sender
+      this.setResponseReceiver(sender)
+      this.setMessageTab(2)
+      this.showDetailsModal = false;
+      this.setMessageModal(this.showDetailsModal);
+    },
   }
 }
 </script>

@@ -1,16 +1,19 @@
 <template>
   <div>
     <NavBar/>
+    <div>
+      <AnnouncementBoard/>
+    </div>
     <div class="container">
       <div class="waiting border-box">
         <waiting/>
       </div>
       <div class="history border-box">
-        <patient/>
-        <physical/>
         <history/>
       </div>
       <div class="write border-box">
+        <patient/>
+        <physical/>
         <history-write/>
       </div>
     </div>
@@ -25,10 +28,12 @@ import Physical from "@/components/doctor/Physical.vue";
 import History from "@/components/doctor/History.vue";
 import HistoryWrite from "@/components/doctor/HistoryWrite.vue";
 import NavBar from "@/components/NavBar.vue";
+import AnnouncementBoard from "@/components/home/Announcement.vue";
 
 export default {
   name: "DoctorView",
   components: {
+    AnnouncementBoard,
     NavBar,
     Waiting,
     Patient,
@@ -39,12 +44,9 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-body * {
+.container {
   font-family: 'Pretendard-Regular';
   font-size: 13px;
-}
-.container {
-  padding-top: 20px;
   //display: flex;
 }
 
@@ -69,9 +71,8 @@ btn {
 // md
 //@media (min-width: 768px) { ... }
 // lg
-@media (min-width: 992px) {
+@media (min-width: 1200px) {
   .container {
-    padding-top: 20px;
     display: flex;
   }
   .waiting {
